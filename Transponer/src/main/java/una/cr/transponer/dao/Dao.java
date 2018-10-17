@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 
 
@@ -44,6 +45,24 @@ public class Dao {
             return null;
         }
     }
+    
+    
+        public ColsFijas ColsFijasBuilder(ResultSet rs) {
+        try {
+            
+            ColsFijas cf = new ColsFijas();
+            cf.setCiclo(rs.getString("SVBTESD_TERM_CODE"));
+            cf.setCrn(rs.getString("SVBTESD_CRN"));
+            cf.setEncuesta(rs.getString("SVBTESD_ESAS_TEMP_PIDM"));
+            cf.setPidm(rs.getString("SVBTESD_FACULTY_PIDM"));
+            cf.setTssc(rs.getString("SVBTESD_TSSC_CODE"));
+            return cf;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    
+    
 /*
     // Provincia Builder
     public Provincia provinciaBuilder(ResultSet rs) {

@@ -47,7 +47,7 @@ public class Main {
                 Respuesta rt = dao.respuestaBuilder(rs);
                 resp.add(rt);
             }
-
+            System.out.println("1");
             // CONSULTA PARA LOS CAMPOS FIJOS!
             String sql2 = "select distinct SVBTESD_ESAS_TEMP_PIDM,SVBTESD_TERM_CODE,SVBTESD_CRN,SVBTESD_FACULTY_PIDM,SVBTESD_TSSC_CODE"
                     + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1447159;";
@@ -56,6 +56,7 @@ public class Main {
             while (rs2.next()) {
                 cf = dao.ColsFijasBuilder(rs2);
             }
+            System.out.println("2");
 
             //System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
             System.out.println("=================");
@@ -81,17 +82,17 @@ public class Main {
 
             //System.out.println(consulta);
             db.executeCrearTabla(consulta.toString());
-            System.out.println("*******************************");
+            System.out.println("3");
 
             //los cursos
             ArrayList<Integer> cursos = new ArrayList<>();
-            String sqlCursos = "SELECT DISTINCT SVBTESD_CRN FROM saturn_svbtesd where SVBTESD_TSSC_CODE= 'ECIDEA18' LIMIT 5;";
+            String sqlCursos = "SELECT DISTINCT SVBTESD_CRN FROM saturn_svbtesd where SVBTESD_TSSC_CODE= 'ECIDEA18' LIMIT 1;";
             ResultSet rs6 = db.executeQuery(sqlCursos);
             while (rs6.next()) {
                 int enc = rs6.getInt("SVBTESD_CRN");
                 cursos.add(enc);
             }
-
+            System.out.println("4");
             //Los numeros de encuestas por curso e
             for (int e : cursos) {
                 String encuestas = "SELECT DISTINCT SVBTESD_ESAS_TEMP_PIDM FROM saturn_svbtesd where SVBTESD_CRN = " + e + ";";
@@ -101,10 +102,11 @@ public class Main {
                     int enc = rs3.getInt("SVBTESD_ESAS_TEMP_PIDM");
                     numEncuestas.add(enc);
                 }
+            System.out.println("5");
 
                 // por cada encuesta, le saco las preguntas
                 for (Integer i : numEncuestas) {
-                    StringBuilder insercion2 = new StringBuilder();
+                    StringBuilder insercion2 = new StringBuilder();//se puede mejorar mucho
                     String sqlpoblar = "select "
                             + "SVBTESD_QCOD_CODE,SVBTESD_OPEN_ANSWER,SVBTESD_PVAC_QPOINTS,SVBTESD_ACOD_CODE,"
                             + "SVBTESD_ESAS_TEMP_PIDM,SVBTESD_TERM_CODE,SVBTESD_CRN,SVBTESD_FACULTY_PIDM,"
@@ -119,8 +121,10 @@ public class Main {
                         resp2.add(rt2);
                         //System.out.println(rt2);
                     }// fin while
+            System.out.println("6");
 
-                    insercion2.append("insert into test1 ( encuesta, periodo, CRN, Profesor, curso) ");
+                    // para las respuestas fijas, se puede  mejorar ya que consulto lo mismo varias veces, mejoraria el tiempo
+                    insercion2.append("insert into test2 ( encuesta, periodo, CRN, Profesor, curso) ");
                     insercion2.append(" values ( ");
                     insercion2.append("'" + cf.getEncuesta() + "' , ");
                     insercion2.append("'" + cf.getCiclo() + "' , ");
@@ -130,6 +134,7 @@ public class Main {
                     insercion2.append(");");
 
                     db.executeUpdate(insercion2.toString()); //this execute the previous insert
+            System.out.println("7");
 
                     for (Respuesta s : resp2) {
                         StringBuilder insercion3 = new StringBuilder();
@@ -140,6 +145,7 @@ public class Main {
                         insercion3.append(" where encuesta = ");
                         insercion3.append(i);
                         insercion3.append("; ");
+                        System.out.println(insercion3.toString());
                         db.executeUpdate(insercion3.toString());
                     }
                     StringBuilder insercion4 = new StringBuilder(); // this execute
@@ -147,10 +153,12 @@ public class Main {
                     insercion4.append(i);
                     insercion4.append(";");
                     db.executeUpdate(insercion4.toString());
+            System.out.println("8");
 
                 }// for de encuestas
 
             } // fin for cursos
+            System.out.println("9");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

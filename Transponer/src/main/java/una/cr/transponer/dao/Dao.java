@@ -12,7 +12,6 @@ import java.util.List;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 
-
 /**
  *
  * @author Andres
@@ -27,29 +26,36 @@ public class Dao {
 
     //BUILDERS
     //Respuesta Builder
-    
     public Respuesta respuestaBuilder(ResultSet rs) {
         try {
-            
+
             Respuesta pr = new Respuesta();
             pr.setCodigo(rs.getString("SVBTESD_QCOD_CODE"));
             String tipoRespuesta = rs.getString("SVBTESD_ACOD_CODE"); //tipo de respuesta
             if (tipoRespuesta.equals("ESCAL-AB")) {
                 //Entonces es de respuesta libre!
-                pr.setRespuesta(rs.getString("SVBTESD_OPEN_ANSWER"));
-            }else{
-                pr.setRespuesta(rs.getString("SVBTESD_PVAC_QPOINTS"));
+                String temp = rs.getString("SVBTESD_OPEN_ANSWER");
+                if (temp == null) {
+                    temp = "-1";
+                }
+                pr.setRespuesta(temp);
+            } else {
+                String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
+                if (temp == null) {
+                    temp = "-1";
+                }
+                pr.setRespuesta(temp);
+
             }
             return pr;
         } catch (SQLException e) {
             return null;
         }
     }
-    
-    
-        public ColsFijas ColsFijasBuilder(ResultSet rs) {
+
+    public ColsFijas ColsFijasBuilder(ResultSet rs) {
         try {
-            
+
             ColsFijas cf = new ColsFijas();
             cf.setCiclo(rs.getString("SVBTESD_TERM_CODE"));
             cf.setCrn(rs.getString("SVBTESD_CRN"));
@@ -61,9 +67,8 @@ public class Dao {
             return null;
         }
     }
-    
-    
-/*
+
+    /*
     // Provincia Builder
     public Provincia provinciaBuilder(ResultSet rs) {
         try {
@@ -227,5 +232,5 @@ public class Dao {
         
     }
     
- */
+     */
 }

@@ -11,10 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author jsanchez
- */
+
+
 public class RelDatabase {
 
     public static final String PROPERTIES_FILE_NAME = "/mochilear.properties";

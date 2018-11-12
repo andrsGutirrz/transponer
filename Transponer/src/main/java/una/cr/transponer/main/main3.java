@@ -20,12 +20,12 @@ import una.cr.transponer.model.Respuesta;
  *
  * @author Andrés Gutiérrez
  */
-public class Main {
+public class main3 {
 
     public static void main(String[] args) throws SQLException {
         /**
          *
-         * Ahorita la logica esta funcionando solo para -POSGR-03- ECIDEA18
+         * Ahorita la logica esta funcionando solo para POSGR-03
          *
          */
         try {
@@ -38,7 +38,7 @@ public class Main {
             ArrayList<Respuesta> resp = new ArrayList<>();
 
             String sql = "select SVBTESD_QCOD_CODE,SVBTESD_OPEN_ANSWER,SVBTESD_PVAC_QPOINTS,SVBTESD_ACOD_CODE"
-                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1447159;"; //1437831 es POSGR-03
+                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1437831;"; //1437831 es POSGR-03
             ResultSet rs = db.executeQuery(sql);
             while (rs.next()) {
                 String fila = rs.getString("SVBTESD_QCOD_CODE");
@@ -50,17 +50,19 @@ public class Main {
 
             // CONSULTA PARA LOS CAMPOS FIJOS!
             String sql2 = "select distinct SVBTESD_ESAS_TEMP_PIDM,SVBTESD_TERM_CODE,SVBTESD_CRN,SVBTESD_FACULTY_PIDM,SVBTESD_TSSC_CODE"
-                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1447159;";
+                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1437831;";
             ResultSet rs2 = db.executeQuery(sql2);
             ColsFijas cf = null;
             while (rs2.next()) {
                 cf = dao.ColsFijasBuilder(rs2);
             }
 
-            //System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+            /*System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+        System.out.println(cf);
+**/
             System.out.println("=================");
             StringBuilder consulta = new StringBuilder();
-            consulta.append("create table IF NOT EXISTS test2( ");
+            consulta.append("create table IF NOT EXISTS test1( ");
 
             consulta.append("encuesta varchar(10), ");
             consulta.append("periodo varchar(10), ");
@@ -71,7 +73,7 @@ public class Main {
             for (String s : columnas) {
                 consulta.append(s);
                 String tipo = " varchar(5)";
-                if (s.equals("INF01") || s.equals("INF23") || s.equals("IGR05") || s.equals("IGR06")) {
+                if (s.equals("INF01") || s.equals("INF03") || s.equals("EGL33") || s.equals("EGL34")) {
                     tipo = " varchar (1000)";// 1000
                 }
                 consulta.append(tipo + " , ");
@@ -83,16 +85,15 @@ public class Main {
             db.executeCrearTabla(consulta.toString());
             System.out.println("*******************************");
 
-            //los cursos
+            //traer todos los resultados
             ArrayList<Integer> cursos = new ArrayList<>();
-            String sqlCursos = "SELECT DISTINCT SVBTESD_CRN FROM saturn_svbtesd where SVBTESD_TSSC_CODE= 'ECIDEA18' LIMIT 5;";
+            String sqlCursos = "SELECT DISTINCT SVBTESD_CRN FROM saturn_svbtesd where SVBTESD_TSSC_CODE= 'POSGR-03' LIMIT 5;";
             ResultSet rs6 = db.executeQuery(sqlCursos);
             while (rs6.next()) {
                 int enc = rs6.getInt("SVBTESD_CRN");
                 cursos.add(enc);
             }
 
-            //Los numeros de encuestas por curso e
             for (int e : cursos) {
                 String encuestas = "SELECT DISTINCT SVBTESD_ESAS_TEMP_PIDM FROM saturn_svbtesd where SVBTESD_CRN = " + e + ";";
                 ResultSet rs3 = db.executeQuery(encuestas);
@@ -102,7 +103,6 @@ public class Main {
                     numEncuestas.add(enc);
                 }
 
-                // por cada encuesta, le saco las preguntas
                 for (Integer i : numEncuestas) {
                     StringBuilder insercion2 = new StringBuilder();
                     String sqlpoblar = "select "
@@ -133,7 +133,7 @@ public class Main {
 
                     for (Respuesta s : resp2) {
                         StringBuilder insercion3 = new StringBuilder();
-                        insercion3.append(" UPDATE test2 set ");
+                        insercion3.append(" UPDATE test1 set ");
                         insercion3.append(s.getCodigo());
                         insercion3.append(" = ");
                         insercion3.append("'" + s.getRespuesta() + "'");
@@ -143,7 +143,7 @@ public class Main {
                         db.executeUpdate(insercion3.toString());
                     }
                     StringBuilder insercion4 = new StringBuilder(); // this execute
-                    insercion4.append("update test2 set ultimo = -1 where encuesta = ");
+                    insercion4.append("update test1 set ultimo = -1 where encuesta = ");
                     insercion4.append(i);
                     insercion4.append(";");
                     db.executeUpdate(insercion4.toString());

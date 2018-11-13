@@ -5,9 +5,6 @@
  */
 package una.cr.transponer.main;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ import una.cr.transponer.model.Respuesta;
  *
  * @author Andrés Gutiérrez
  */
-public class Main {
+public class main4 {
 
     public static void main(String[] args) throws SQLException {
         /**
@@ -37,6 +34,7 @@ public class Main {
             ArrayList<String> columnas = new ArrayList<>();
             ArrayList<Respuesta> resp = new ArrayList<>();
 
+            //Crea las columnas
             String sql = "select SVBTESD_QCOD_CODE,SVBTESD_OPEN_ANSWER,SVBTESD_PVAC_QPOINTS,SVBTESD_ACOD_CODE"
                     + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1447159;"; //1437831 es POSGR-03
             ResultSet rs = db.executeQuery(sql);
@@ -48,7 +46,7 @@ public class Main {
                 resp.add(rt);
             }
             System.out.println("1");
-            // CONSULTA PARA LOS CAMPOS FIJOS!
+            // CONSULTA PARA LOS CAMPOS FIJOS! esta se puede mejorar, juntando esta consulta con la otra
             String sql2 = "select distinct SVBTESD_ESAS_TEMP_PIDM,SVBTESD_TERM_CODE,SVBTESD_CRN,SVBTESD_FACULTY_PIDM,SVBTESD_TSSC_CODE"
                     + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = 1447159;";
             ResultSet rs2 = db.executeQuery(sql2);
@@ -58,8 +56,30 @@ public class Main {
             }
             System.out.println("2");
 
+            //System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+            System.out.println("=================");
+            StringBuilder consulta = new StringBuilder();
+            consulta.append("create table IF NOT EXISTS test2( ");
 
-            dao.crearTabla("tabla", columnas);
+            consulta.append("encuesta varchar(10), ");
+            consulta.append("periodo varchar(10), ");
+            consulta.append("CRN varchar(10), ");
+            consulta.append("Profesor varchar(10), ");
+            consulta.append("curso varchar(10), ");
+
+            for (String s : columnas) {
+                consulta.append(s);
+                String tipo = " varchar(5)";
+                if (s.equals("INF01") || s.equals("INF23") || s.equals("IGR05") || s.equals("IGR06")) {
+                    tipo = " varchar (1000)";// 1000
+                }
+                consulta.append(tipo + " , ");
+            }
+            consulta.append(" ultimo int");
+            consulta.append(");");
+
+            //System.out.println(consulta);
+            db.executeCrearTabla(consulta.toString());
             System.out.println("3");
 
             //los cursos

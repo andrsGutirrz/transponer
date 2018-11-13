@@ -68,169 +68,26 @@ public class Dao {
         }
     }
 
-    /*
-    // Provincia Builder
-    public Provincia provinciaBuilder(ResultSet rs) {
-        try {
-            Provincia pr = new Provincia();
-            pr.setNumero(rs.getInt("numero"));
-            pr.setNombre(rs.getString("nombre"));
-            return pr;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
+    public boolean crearTabla(String nombreTabla, ArrayList<String> columnas) {
+        StringBuilder consulta = new StringBuilder();
+        consulta.append("create table IF NOT EXISTS "+nombreTabla+" ( ");
+        consulta.append("encuesta varchar(10), ");
+        consulta.append("periodo varchar(10), ");
+        consulta.append("CRN varchar(10), ");
+        consulta.append("Profesor varchar(10), ");
+        consulta.append("curso varchar(10), ");
 
-    // Viaje Builder 
-    public Viaje viajeBuilder(ResultSet rs) {
-        try {
-            Viaje vj = new Viaje();
-            vj.setPrecio(rs.getFloat("precio"));
-            vj.setFecha_salida(rs.getDate("fecha_salida").toString());
-            vj.setLugar(rs.getString("lugar"));
-            vj.setLugar_salida(rs.getString("lugar_salida"));
-            return vj;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //Lugar Builder
-    public Lugar lugarBuilder(ResultSet rs) {
-        try {
-            Lugar lg = new Lugar();
-            lg.setDescripcion(rs.getString("descripcion"));
-            lg.setDireccion(rs.getString("direccion"));
-            lg.setNombre(rs.getString("nombre"));
-            lg.setProvincia(rs.getInt("provincia"));
-            return lg;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-
-    //Others
-    //############################################## CLIENTES
-    //Get all clients, with no filters
-    public List<Cliente> getAllClientes() {
-        List<Cliente> clientes = new ArrayList<Cliente>();
-        try {
-            String sql = "select * from Cliente;";
-            ResultSet rs = db.executeQuery(sql);
-            while (rs.next()) {
-                clientes.add(clienteBuilder(rs));
+        for (String s : columnas) {
+            consulta.append(s);
+            String tipo = " varchar(5)";
+            if (s.equals("INF01") || s.equals("INF23") || s.equals("IGR05") || s.equals("IGR06")) {
+                tipo = " varchar (1000)";// 1000
             }
-        } catch (SQLException e) {
-
+            consulta.append(tipo).append(" , ");
         }
-        return clientes;
-    }
+        consulta.append(" ultimo int");
+        consulta.append(");");
 
-    //Registrar un cliente
-    public void registrarCliente(Cliente cl) throws Exception {
-        String sql = "insert into Cliente (cedula,nombre,telefono,correo,residencia)"
-                + "values('%s','%s','%s','%s','%s')";
-        sql = String.format(sql, cl.getCedula(), cl.getNombre(), cl.getTelefono(), cl.getCorreo(), cl.getResidencia());
-        int count = db.executeUpdate(sql);
-        if (count == 0) {
-            throw new Exception("Cliente ya existe");
-        }
+        return db.executeCrearTabla(consulta.toString());
     }
-
-    //######################################################## Lugares
-    //Todas las provincias
-    public List<Provincia> getAllProvincia() {
-        List<Provincia> provincias = new ArrayList<Provincia>();
-        try {
-            String sql = "select * from Provincia;";
-            ResultSet rs = db.executeQuery(sql);
-            while (rs.next()) {
-                provincias.add(provinciaBuilder(rs));
-            }
-        } catch (SQLException e) {
-
-        }
-        return provincias;
-    }
-
-    //############################################# LUGAR
-    public void registrarLugar(Lugar lg) throws Exception {
-        String sql = "insert into Lugar (provincia,nombre,direccion,descripcion)"
-                + "values('%d','%s','%s','%s')";
-        sql = String.format(sql, lg.getProvincia(), lg.getNombre(), lg.getDireccion(), lg.getDescripcion());
-        int count = db.executeUpdate(sql);
-        if (count == 0) {
-            throw new Exception("Lugar ya existe");
-        }
-    }
-    
-        //Todas los lugares
-    public List<Lugar> getAllLugar() {
-        List<Lugar> lugares = new ArrayList<Lugar>();
-        try {
-            String sql = "select * from Lugar;";
-            ResultSet rs = db.executeQuery(sql);
-            while (rs.next()) {
-                lugares.add(lugarBuilder(rs));
-            }
-        } catch (SQLException e) {
-
-        }
-        return lugares;
-    }
-
-    // ############################################ VIAJE
-    //Todas los viajes
-    public List<Viaje> getAllViaje() {
-        List<Viaje> viajes = new ArrayList<Viaje>();
-        try {
-            String sql = "select * from Viaje;";
-            ResultSet rs = db.executeQuery(sql);
-            while (rs.next()) {
-                viajes.add(viajeBuilder(rs));
-            }
-        } catch (SQLException e) {
-
-        }
-        return viajes;
-    }
-    
-    
-    public void registrarViaje(Viaje vj) throws Exception {
-        String sql = "insert into Viaje (lugar,precio,fecha_salida,lugar_salida)"
-           + "values('%s','%f','%s','%s')";
-        sql = String.format(sql,vj.getLugar(),vj.getPrecio(),vj.getFecha_salida(),vj.getLugar_salida());
-        int count = db.executeUpdate(sql);
-        if (count == 0) {
-            throw new Exception("Viaje error");
-        }
-    }
-
-    //######################################### CLIENTE_VIAJE
-    public void registrarCliente_Viaje(Cliente_Viaje cl) throws Exception {
-        String sql = "insert into Cliente_Viaje (cliente,fecha,precio,lugar,fecha_salida,lugar_salida,campos)"
-           + "values('%s','%s','%f','%s','%s','%s','%d')";
-        sql = String.format(sql,cl.getCliente(),cl.getFecha(), cl.getPrecio(),cl.getLugar(),cl.getFecha_salida(),cl.getLugar_salida(),cl.getCampos());
-        int count = db.executeUpdate(sql);
-        if (count == 0) {
-            throw new Exception("Cliente_Viaje error");
-        }
-    }
-    
-    //######################################### BUSETA
-
-    public void registrarBuseta(Buseta bs) throws Exception {
-        String sql = "insert into Buseta (proveedor,asientos_totales,asientos_disponibles,"
-                + "telefono,lugar,fecha_salida,lugar_salida)"
-           + "values('%s','%d','%d','%s','%s','%s','%s')";
-        sql = String.format(sql,bs.getProveedor(),bs.getAsientos_totales(),bs.getAsientos_disponibles(),
-                bs.getTelefono(),bs.getLugar(),bs.getFecha_salida(),bs.getLugar_salida());
-        int count = db.executeUpdate(sql);
-        if (count == 0) {
-            throw new Exception("Buseta error");
-        }
-        
-    }
-    
-     */
 }

@@ -19,12 +19,21 @@ import una.cr.transponer.model.Respuesta;
 /**
  *
  * @author Andrés Gutiérrez
+    POSGR-03
+    ECIDEA18
+    EDDECEG3
+    EDDLAB18
+    EDDMVLC5
+    EDDMVCC5
+    EVDBIM18
+    IGENER18
+    IGENER18
  */
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        String nombreTabla = "test3";
-        String instrumento = "ECIDEA18";
+        String nombreTabla = "test4";
+        String instrumento = "POSGR-03";
         ColsFijas cf = null;
         try {
             RelDatabase db;
@@ -32,33 +41,26 @@ public class Main {
 
             Dao dao = new Dao();
 
-            System.out.println("1");
-            
-            ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(instrumento);
+            String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
 
-            System.out.println("2");
+            ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
+
 
             dao.crearTabla(nombreTabla, columnas);
-            
-            System.out.println("3");
 
             //los cursos
             ArrayList<Integer> cursos = dao.obtenerCursosPorInstrumento(instrumento);
-            
-            System.out.println("4");
+
 
             //Los numeros de encuestas por curso e
             for (int e : cursos) {
                 ArrayList<Integer> numEncuestas = dao.obtenerEncuestasPorCurso(e);
-                System.out.println("5");
                 // por cada encuesta, le saco las preguntas
                 for (Integer i : numEncuestas) {
 
                     cf = dao.obtenerColumnasFijas(i);
                     ArrayList<Respuesta> resp2 = dao.obtenerRespuestasPorEncuesta(i);
-                    System.out.println("6");
                     dao.insertarColumnasFijas(nombreTabla, cf);
-                    System.out.println("7");
 
                     for (Respuesta s : resp2) {
                         //System.out.println(s);
@@ -66,12 +68,10 @@ public class Main {
                     }
 
                     dao.insertarUltimo(nombreTabla, i);
-                    System.out.println("8");
 
                 }// for de encuestas
 
             } // fin for cursos
-            System.out.println("9");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

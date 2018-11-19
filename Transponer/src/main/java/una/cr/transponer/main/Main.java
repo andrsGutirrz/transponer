@@ -18,22 +18,14 @@ import una.cr.transponer.model.Respuesta;
 
 /**
  *
- * @author Andrés Gutiérrez
-    POSGR-03
-    ECIDEA18
-    EDDECEG3
-    EDDLAB18
-    EDDMVLC5
-    EDDMVCC5
-    EVDBIM18
-    IGENER18
-    IGENER18
+ * @author Andrés Gutiérrez POSGR-03 ECIDEA18 EDDECEG3 EDDLAB18 EDDMVLC5
+ * EDDMVCC5 EVDBIM18 IGENER18 
  */
 public class Main {
 
     public static void main(String[] args) throws SQLException {
         String nombreTabla = "test4";
-        String instrumento = "POSGR-03";
+        String instrumento = "ECIDEA18";
         ColsFijas cf = null;
         try {
             RelDatabase db;
@@ -45,12 +37,10 @@ public class Main {
 
             ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
 
-
             dao.crearTabla(nombreTabla, columnas);
 
             //los cursos
             ArrayList<Integer> cursos = dao.obtenerCursosPorInstrumento(instrumento);
-
 
             //Los numeros de encuestas por curso e
             for (int e : cursos) {

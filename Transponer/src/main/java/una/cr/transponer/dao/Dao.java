@@ -15,7 +15,7 @@ import una.cr.transponer.model.Respuesta;
 /**
  *
  * @author Andres
-
+ *
  */
 public class Dao {
 
@@ -32,17 +32,17 @@ public class Dao {
 
             Respuesta pr = new Respuesta();
             pr.setCodigo(rs.getString("SVBTESD_QCOD_CODE"));
+            pr.setRespuesta("-1");
             String tipoRespuesta = rs.getString("SVBTESD_ACOD_CODE"); //tipo de respuesta
             if (tipoRespuesta.equals("ESCAL-AB")) {
-                //Entonces es de respuesta libre!
                 String temp = rs.getString("SVBTESD_OPEN_ANSWER");
-                if (temp == null) {
+                if (temp == null || temp.isEmpty()) {
                     temp = "-1";
                 }
                 pr.setRespuesta(temp);
             } else {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
-                if (temp == null) {
+                if (temp == null || temp.isEmpty()) {
                     temp = "-1";
                 }
                 pr.setRespuesta(temp);
@@ -86,11 +86,10 @@ public class Dao {
             EGL34
             IGR05
             IGR06
-            */
-            if (    s.equals("INF03") || s.equals("INF01") || 
-                    s.equals("INF23") || s.equals("IGR05") ||
-                    s.equals("IGR06") || s.equals("EGL33") || s.equals("EGL34")
-                ){
+             */
+            if (s.equals("INF03") || s.equals("INF01")
+                    || s.equals("INF23") || s.equals("IGR05")
+                    || s.equals("IGR06") || s.equals("EGL33") || s.equals("EGL34")) {
                 tipo = " varchar (1000)";// 1000
             }
             consulta.append(tipo).append(" , ");
@@ -107,7 +106,7 @@ public class Dao {
         try {
             String sqlCursos = "SELECT DISTINCT "
                     + "SVBTESD_CRN "
-                    + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s' LIMIT 1;";
+                    + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s' ;";
             sqlCursos = String.format(sqlCursos, instrumento);
             ResultSet rs6 = db.executeQuery(sqlCursos);
             while (rs6.next()) {
@@ -224,7 +223,6 @@ public class Dao {
     }
 
     public void insertarUltimo(String nombreTabla, Integer encuesta) {
-
         String sqlInsertarUltimo = "update %s set ultimo = -1 where encuesta = %d ;";
         sqlInsertarUltimo = String.format(sqlInsertarUltimo, nombreTabla, encuesta);
         db.executeUpdate(sqlInsertarUltimo);

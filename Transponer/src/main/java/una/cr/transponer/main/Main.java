@@ -5,10 +5,7 @@
  */
 package una.cr.transponer.main;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import una.cr.transponer.dao.Dao;
@@ -24,8 +21,8 @@ import una.cr.transponer.model.Respuesta;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        String nombreTabla = "test4";
-        String instrumento = "ECIDEA18";
+        String nombreTabla = "EDDMVLC5";
+        String instrumento = "EDDMVLC5";
         ColsFijas cf = null;
         try {
             RelDatabase db;

@@ -101,15 +101,16 @@ public class Dao {
     }
 
     public ArrayList<Integer> obtenerCursosPorInstrumento(String instrumento) {
+        // si se quiere n resultados, usar limit n en la consulta sql, donde n es la cantidad de resultados que se quieren
         ArrayList<Integer> cursos = new ArrayList<>();
         int curso = 0;
         try {
             String sqlCursos = "SELECT DISTINCT "
                     + "SVBTESD_CRN "
-                    + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s' ;";
+                    + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s';"; // limit 30
             sqlCursos = String.format(sqlCursos, instrumento);
             ResultSet rs6 = db.executeQuery(sqlCursos);
-            while (rs6.next()) {
+            while (rs6.next()) { 
                 curso = rs6.getInt("SVBTESD_CRN");
                 cursos.add(curso);
             }

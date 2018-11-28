@@ -1,7 +1,18 @@
 
-.backg-logo, footer{
-    height: 170px;
+.backg-logo{
+    height: 120px;
     background-color: #bc0000;
+}
+
+.footer{
+    height: 100px;
+    background-color: #bc0000;
+    
+    bottom: 0px;
+    left: 0px;
+    right: 0px;    
+    margin-bottom: 0px;
+
 }
 
 
@@ -32,4 +43,11 @@
 
 body{
     background-color: #e1e1e1;
+}
+
+
+.loginform {
+    width: 500px;
+    margin:0 auto;
+    padding: 20px;
 }

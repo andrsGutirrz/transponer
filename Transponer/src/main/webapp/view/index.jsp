@@ -14,7 +14,7 @@
         <title>Evaluacion Docente</title>
     </head>
     <body>
-        <div class="container">   
+        <div class="">   
             <div class="header">                           
                 <div class="backg-logo">   
                     <img class="img-fluid" src="../images/logo.png" alt="logo-vicerrectoria" id="logo">  
@@ -65,7 +65,7 @@
                     </form>
                 </div>                    
             </div>
-            <footer class="">
+            <footer class="footer">
 
             </footer>
         </div> <!-- Container -->

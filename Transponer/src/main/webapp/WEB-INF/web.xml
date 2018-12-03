@@ -8,7 +8,9 @@
     <servlet-mapping>
         <servlet-name>LoginTransponer</servlet-name>
         <url-pattern>/LoginTransponer</url-pattern>
-        <url-pattern>/nall</url-pattern>
+        <url-pattern>/consultar</url-pattern>
+        <url-pattern>/transponer</url-pattern>
+        <url-pattern>/index</url-pattern>
     </servlet-mapping>
     
     <session-config>

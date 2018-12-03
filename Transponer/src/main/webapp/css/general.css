@@ -7,11 +7,13 @@
 .footer{
     height: 100px;
     background-color: #bc0000;
-    
+    position: absolute;
+
     bottom: 0px;
     left: 0px;
     right: 0px;    
     margin-bottom: 0px;
+
 
 }
 
@@ -28,13 +30,18 @@
 }
 
 .contenido{
-    border: #3d3d3d solid 5px;
+    /*border: #3d3d3d solid 5px;*/
+    height: 400px;
+    max-height: 500px;
 }
 
 .formulario{
-    width: 80%;
+    width: 45%;
     margin: auto;
-    padding: 20px;
+    position: relative;
+    top: 30%;
+    button: 30%;
+    padding: 10px;
 }
 
 .btn{
@@ -50,4 +57,15 @@ body{
     width: 500px;
     margin:0 auto;
     padding: 20px;
+}
+
+
+.bienvenida{
+    border: #3d3d3d solid 5px;
+    width: 60%;
+    margin: auto;
+    position: relative;
+    top: 30%;
+    button: 30%;
+    padding: 10px;
 }

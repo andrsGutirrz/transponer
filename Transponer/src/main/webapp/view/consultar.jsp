@@ -22,6 +22,6 @@
 
             </footer>
         </div> <!-- Container -->
-        <script src="../js/jquery-3.3.1.min"></script>
+        <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
     </body>
 </html>

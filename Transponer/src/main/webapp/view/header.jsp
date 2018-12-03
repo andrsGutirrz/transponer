@@ -18,7 +18,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/Transponer/view/index.jsp">Incio</a>
                 </li>
                 <li class="nav-item">

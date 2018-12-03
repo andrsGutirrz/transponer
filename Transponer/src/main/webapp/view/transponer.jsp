@@ -17,11 +17,11 @@
                 <div class="formulario">
                     <form>
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-7">
                                 <label for="inputCity">Nombre de la tabla</label>
                                 <input type="text" class="form-control" id="inputCity">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-5">
                                 <label for="inputState">Instrumento</label>
                                 <select id="inputState" class="form-control">
                                     <option selected>Escoger...</option>
@@ -29,10 +29,6 @@
                                     <option>ECIDEA18</option>
                                     <option>EDDECEG3</option>
                                 </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputZip">Zip</label>
-                                <input type="text" class="form-control" id="inputZip">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Generar tabla</button>
@@ -43,6 +39,6 @@
 
             </footer>
         </div> <!-- Container -->
-        <script src="../js/jquery-3.3.1.min"></script>
+        <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
     </body>
 </html>

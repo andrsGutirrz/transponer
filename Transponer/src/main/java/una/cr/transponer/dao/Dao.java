@@ -8,7 +8,6 @@ package una.cr.transponer.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 
@@ -31,7 +30,12 @@ public class Dao {
         try {
 
             Respuesta pr = new Respuesta();
-            pr.setCodigo(rs.getString("SVBTESD_QCOD_CODE"));
+            String cod = rs.getString("SVBTESD_QCOD_CODE");
+            if (cod.contains("-")) {
+                //podemos encontrarnos con columnas que tienen -, y da error de syntax
+                cod = cod.replace("-", "");
+            }
+            pr.setCodigo(cod);
             pr.setRespuesta("-1");
             String tipoRespuesta = rs.getString("SVBTESD_ACOD_CODE"); //tipo de respuesta
             if (tipoRespuesta.equals("ESCAL-AB")) {
@@ -94,9 +98,9 @@ public class Dao {
             }
             consulta.append(tipo).append(" , ");
         }
+
         consulta.append(" ultimo int");
         consulta.append(");");
-
         return db.executeCrearTabla(consulta.toString());
     }
 
@@ -110,7 +114,7 @@ public class Dao {
                     + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s';"; // limit 30
             sqlCursos = String.format(sqlCursos, instrumento);
             ResultSet rs6 = db.executeQuery(sqlCursos);
-            while (rs6.next()) { 
+            while (rs6.next()) {
                 curso = rs6.getInt("SVBTESD_CRN");
                 cursos.add(curso);
             }
@@ -148,6 +152,10 @@ public class Dao {
             ResultSet rs6 = db.executeQuery(sqlColumnas);
             while (rs6.next()) {
                 fila = rs6.getString("SVBTESD_QCOD_CODE");
+                if (fila.contains("-")) {
+                    //podemos encontrarnos con columnas que tienen -, y da error de syntax
+                    fila = fila.replace("-", "");
+                }
                 columnas.add(fila);
             }
         } catch (SQLException e) {

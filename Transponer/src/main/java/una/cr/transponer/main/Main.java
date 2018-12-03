@@ -31,7 +31,9 @@ public class Main {
             Dao dao = new Dao();
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
-
+            
+            System.out.println(encuestaPrimera);
+            
             ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
 
             dao.crearTabla(nombreTabla, columnas);

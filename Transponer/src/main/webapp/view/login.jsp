@@ -14,16 +14,16 @@
         <title>Login</title>
     </head>
     <body>
-        <div class="">   
+        <div class="contenedor">   
             <div class="header">                           
                 <div class="backg-logo">   
                     <img class="img-fluid" src="../images/logo.png" alt="logo-vicerrectoria" id="logo">  
-                    <h1>Evaluacion Docente</h1>
+                    <h1>Transponer</h1>
                 </div>
             </div>
             <div class="loginform">
 
-                <form action="/login">
+                <form action="/Transponer/LoginTransponer" method="post">
                     <div class="form-group">
                         <label for="username">Nombre de usuario</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">

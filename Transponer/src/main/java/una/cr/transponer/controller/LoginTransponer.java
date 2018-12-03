@@ -23,10 +23,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Andrés Gutiérrez
  */
-@WebServlet(name = "Vistas", urlPatterns = {"/login"})
+@WebServlet(name = "LoginTransponer", urlPatterns = {"/LoginTransponer","/index","/transponer","/consultar"})
 @MultipartConfig
-public class login extends HttpServlet {
-
+public class LoginTransponer extends HttpServlet {
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,23 +39,22 @@ public class login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            switch (request.getServletPath()) {
-                case "/login":
-                    //this.doListarOferentes(request, response);
-                    break;
+        
+        switch (request.getServletPath()) {
+            case "/LoginTransponer":
+                this.doLogin2(request, response);
+                break;
 
-            }
         }
     }
 
-    public void doLogin(HttpServletRequest request, HttpServletResponse response) {
+    public void doLogin2(HttpServletRequest request, HttpServletResponse response) {
         try {
-            HttpSession s = request.getSession(true);
+           //  HttpSession s = request.getSession(true);
             String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            String password = request.getParameter("pass");
             System.out.println(username + " " + password);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("view/index.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
         }

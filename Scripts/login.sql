@@ -11,6 +11,7 @@ create table transponer.login(
 	CONSTRAINT PK_transponer_login PRIMARY KEY (id)
 );
 
-insert into transponer.login(username,clave,activo) values ('ricardo',SHA('ricardo'),1);
+-- insert into transponer.login(username,clave,activo) values ('ricardo',SHA('ricardo'),1);
+insert into transponer.login(username,clave,activo) values ('ricardo','ricardo',1);
 
 select * from transponer.login;

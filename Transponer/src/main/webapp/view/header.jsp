@@ -19,15 +19,17 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/Transponer/view/index.jsp">Incio</a>
+                    <a class="nav-link" href="/Transponer/index">Incio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Transponer/view/transponer.jsp">Transponer</a>
+                    <a class="nav-link" href="/Transponer/transponer">Transponer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Transponer/view/consultar.jsp">Consultar</a>
+                    <a class="nav-link" href="/Transponer/consultar">Consultar</a>
                 </li>
             </ul>
         </div>
     </nav>
 </div>
+
+<!-- Transponer/view/transponer.jsp -->

@@ -13,8 +13,6 @@
     left: 0px;
     right: 0px;    
     margin-bottom: 0px;
-
-
 }
 
 
@@ -68,4 +66,9 @@ body{
     top: 30%;
     button: 30%;
     padding: 10px;
+}
+
+#mensajeRespuesta{
+    width: 50%;
+    margin: auto;    
 }

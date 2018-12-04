@@ -21,8 +21,8 @@ import una.cr.transponer.model.Respuesta;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        String nombreTabla = "EDDMVLC5";
-        String instrumento = "EDDMVLC5";
+        String nombreTabla = "IGENER18";
+        String instrumento = "IGENER18";
         ColsFijas cf = null;
         try {
             RelDatabase db;

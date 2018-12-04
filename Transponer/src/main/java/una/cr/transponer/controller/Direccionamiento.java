@@ -5,55 +5,62 @@
  */
 package una.cr.transponer.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Andrés Gutiérrez
  */
-@WebServlet(name = "LoginTransponer", urlPatterns = {"/LoginTransponer"})
+@WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index"})
 @MultipartConfig
-public class LoginTransponer extends HttpServlet {
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+public class Direccionamiento extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
         switch (request.getServletPath()) {
-            case "/LoginTransponer":
-                this.doLogin2(request, response);
+            case "/index":
+                this.doIndex(request, response);
                 break;
-
+            case "/transponer":
+                this.doTransponer(request, response);
+                break;
+            case "/consultar":
+                this.doConsultar(request, response);
+                break;
         }
     }
 
-    public void doLogin2(HttpServletRequest request, HttpServletResponse response) {
+    public void doIndex(HttpServletRequest request, HttpServletResponse response) {
         try {
-           //  HttpSession s = request.getSession(true);
-            String username = request.getParameter("username");
-            String password = request.getParameter("pass");
-            System.out.println(username + " " + password);
             request.getRequestDispatcher("view/index.jsp").forward(request, response);//*
+        } catch (Exception e) {
+            response.setStatus(401); //Bad request
+        }
+    }
+
+    public void doTransponer(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            
+            String msj = (String)request.getAttribute("mensaje");
+            request.setAttribute("mensaje", msj);
+            
+            request.getRequestDispatcher("view/transponer.jsp").forward(request, response);//*
+        } catch (Exception e) {
+            response.setStatus(401); //Bad request
+        }
+    }
+
+    public void doConsultar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("view/consultar.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
         }

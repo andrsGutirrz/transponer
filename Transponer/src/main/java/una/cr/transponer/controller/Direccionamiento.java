@@ -6,13 +6,13 @@
 package una.cr.transponer.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import una.cr.transponer.model.Mensaje;
 
 /**
  *
@@ -49,8 +49,12 @@ public class Direccionamiento extends HttpServlet {
     public void doTransponer(HttpServletRequest request, HttpServletResponse response) {
         try {
             
-            String msj = (String)request.getAttribute("mensaje");
-            request.setAttribute("mensaje", msj);
+            /*Mensaje msj = (Mensaje)request.getAttribute("mensaje");
+            System.out.println("adf: "+msj);
+            if (msj == null) {
+                msj.setMensaje("-1");
+            }*/
+            request.setAttribute("mensaje", "-1");
             
             request.getRequestDispatcher("view/transponer.jsp").forward(request, response);//*
         } catch (Exception e) {

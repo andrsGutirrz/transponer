@@ -7,12 +7,11 @@
 .footer{
     height: 100px;
     background-color: #bc0000;
-    position: absolute;
-
+    /*position: absolute;
     bottom: 0px;
     left: 0px;
     right: 0px;    
-    margin-bottom: 0px;
+    margin-bottom: 0px;*/
 }
 
 
@@ -28,26 +27,37 @@
 }
 
 .contenido{
-    /*border: #3d3d3d solid 5px;*/
-    height: 400px;
-    max-height: 500px;
+    border: #3d3d3d solid 5px;
+    height: 550px;
+}
+
+.contenidoLogin{
+    border: #3d3d3d solid 5px;
+    height: 600px;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .formulario{
-    width: 45%;
+    width: 50%;
     margin: auto;
+    padding: 10px;
+    /*
+    border: blue solid 5px;
     position: relative;
     top: 30%;
     button: 30%;
-    padding: 10px;
+    */
 }
 
-.btn{
+.btn,.cardLogin{
     background-color: #3d3d3d;    
 }
 
 body{
     background-color: #e1e1e1;
+    /*border: yellow solid 5px;*/
 }
 
 
@@ -62,13 +72,21 @@ body{
     border: #3d3d3d solid 5px;
     width: 60%;
     margin: auto;
-    position: relative;
-    top: 30%;
-    button: 30%;
-    padding: 10px;
+    padding: 15px;
 }
 
 #mensajeRespuesta{
     width: 50%;
     margin: auto;    
+    display:block;
 }
+
+h1{
+    font-family: "Times New Roman", Times, serif;
+}
+
+.ctrHor{
+    margin-top: 100px;
+}
+
+

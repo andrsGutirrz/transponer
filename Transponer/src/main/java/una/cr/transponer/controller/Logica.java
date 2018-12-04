@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import una.cr.transponer.dao.Dao;
 import una.cr.transponer.dao.RelDatabase;
 import una.cr.transponer.model.ColsFijas;
+import una.cr.transponer.model.Mensaje;
 import una.cr.transponer.model.Respuesta;
 
 /**
@@ -42,10 +43,13 @@ public class Logica extends HttpServlet {
         try {
             
             String nombreTabla = request.getParameter("nombreTabla");
-            String instrumentos = request.getParameter("instrumentos");
+            String instrumento = request.getParameter("instrumentos");
                
-            mensaje = "Tabla generada!";
-            request.setAttribute("mensaje", mensaje);
+            mensaje = "Tabla generada!";            
+            Mensaje msj = new Mensaje(mensaje,nombreTabla,instrumento);            
+            request.setAttribute("mensaje", msj);
+            
+            this.transponerEvaluaciones(nombreTabla, instrumento);
             
             request.getRequestDispatcher("/transponer").forward(request, response);
         } catch (Exception e) {

@@ -45,5 +45,10 @@ public class Mensaje implements java.io.Serializable {
     public void setInstrumento(String instrumento) {
         this.instrumento = instrumento;
     }
+
+    @Override
+    public String toString() {
+        return "Mensaje{" + "mensaje=" + mensaje + ", nombreTabla=" + nombreTabla + ", instrumento=" + instrumento + '}';
+    }
        
 }

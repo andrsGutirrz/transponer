@@ -50,7 +50,7 @@ public class Direccionamiento extends HttpServlet {
         try {
             
             Mensaje msj = (Mensaje)request.getAttribute("mensaje");
-            System.out.println("adf: "+msj);
+            System.out.println("Msj: "+msj);
             if (msj == null) {
                 msj = new Mensaje("-1","","");
             }

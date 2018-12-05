@@ -6,7 +6,6 @@
 package una.cr.transponer.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import una.cr.transponer.dao.Dao;
-import una.cr.transponer.dao.RelDatabase;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Mensaje;
 import una.cr.transponer.model.Respuesta;
@@ -27,7 +25,7 @@ import una.cr.transponer.model.Respuesta;
 @WebServlet(name = "Logica", urlPatterns = {"/make-transponer"})
 @MultipartConfig
 public class Logica extends HttpServlet {
-        
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -41,34 +39,34 @@ public class Logica extends HttpServlet {
     public void doMakeTransponer(HttpServletRequest request, HttpServletResponse response) {
         String mensaje = "";
         try {
-            
+
             String nombreTabla = request.getParameter("nombreTabla");
             String instrumento = request.getParameter("instrumentos");
-               
-            mensaje = "Tabla generada!";            
-            Mensaje msj = new Mensaje(mensaje,nombreTabla,instrumento);            
+
+            mensaje = this.transponerEvaluaciones(nombreTabla, instrumento);
+            
+            System.out.println("el mensaje es: " + mensaje);
+            
+            Mensaje msj = new Mensaje(mensaje, nombreTabla, instrumento);
             request.setAttribute("mensaje", msj);
-            
-            //this.transponerEvaluaciones(nombreTabla, instrumento);
-            
+
             request.getRequestDispatcher("/transponer").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
         }
     }
 
-    public void transponerEvaluaciones(String _nombreTabla, String _instrumento) {
+    public String transponerEvaluaciones(String _nombreTabla, String _instrumento) {
 
         String nombreTabla = _nombreTabla;
         String instrumento = _instrumento;
+        String mensaje = "Éxito tabla generada!";
         ColsFijas cf = null;
         try {
 
             Dao dao = new Dao();
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
-
-            System.out.println(encuestaPrimera);
 
             ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
 
@@ -99,8 +97,11 @@ public class Logica extends HttpServlet {
             } // fin for cursos
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            mensaje = "Error al procesar las encuestas!";
+            return mensaje;
         }
+
+        return mensaje;
 
     }
 

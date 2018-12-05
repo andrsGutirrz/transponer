@@ -104,7 +104,7 @@ public class Dao {
         return db.executeCrearTabla(consulta.toString());
     }
 
-    public ArrayList<Integer> obtenerCursosPorInstrumento(String instrumento) {
+    public ArrayList<Integer> obtenerCursosPorInstrumento(String instrumento) throws Exception {
         // si se quiere n resultados, usar limit n en la consulta sql, donde n es la cantidad de resultados que se quieren
         ArrayList<Integer> cursos = new ArrayList<>();
         int curso = 0;
@@ -119,26 +119,28 @@ public class Dao {
                 cursos.add(curso);
             }
         } catch (SQLException e) {
+            throw new Exception("Error "+e.getMessage());
         }
         return cursos;
     }
 
-    public String obtenerPrimeraEncuestaPorInstrumento(String instrumento) {
+    public String obtenerPrimeraEncuestaPorInstrumento(String instrumento) throws Exception {
         String encuesta = "";
         try {
             String sql = "select "
                     + "SVBTESD_ESAS_TEMP_PIDM "
-                    + "from saturn_svbtesd where SVBTESD_TSSC_CODE = '%s' ;";
+                    + "from saturn_svbtesd where SVBTESD_TSSC_CODE = '%s' ;"; // *********  ERROR **********
             sql = String.format(sql, instrumento);
             ResultSet rs = db.executeQuery(sql);
             rs.next();
             encuesta = rs.getString("SVBTESD_ESAS_TEMP_PIDM");
         } catch (SQLException e) {
+            throw new Exception("Error AL obtener la primera encuesta");
         }
         return encuesta;
     }
 
-    public ArrayList<String> obtenerColumnasPorInstrumento(String encuesta) {
+    public ArrayList<String> obtenerColumnasPorInstrumento(String encuesta) throws Exception {
         ArrayList<String> columnas = new ArrayList<>();
         String fila = "";
         try {
@@ -159,11 +161,12 @@ public class Dao {
                 columnas.add(fila);
             }
         } catch (SQLException e) {
+            throw new Exception("Error "+e.getMessage());
         }
         return columnas;
     }
 
-    public ArrayList<Integer> obtenerEncuestasPorCurso(int curso) {
+    public ArrayList<Integer> obtenerEncuestasPorCurso(int curso) throws Exception {
         ArrayList<Integer> numEncuestas = new ArrayList<>();
         int encuesta = 0;
         try {
@@ -175,11 +178,12 @@ public class Dao {
                 numEncuestas.add(encuesta);
             }
         } catch (SQLException e) {
+            throw new Exception("Error "+e.getMessage());
         }
         return numEncuestas;
     }
 
-    public ColsFijas obtenerColumnasFijas(Integer curso) {
+    public ColsFijas obtenerColumnasFijas(Integer curso) throws Exception {
         ColsFijas cf = new ColsFijas();
         try {
             String sql = "select distinct "
@@ -194,12 +198,12 @@ public class Dao {
             rs.next();
             cf = this.ColsFijasBuilder(rs);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new Exception("Error "+e.getMessage());
         }
         return cf;
     }
 
-    public ArrayList<Respuesta> obtenerRespuestasPorEncuesta(int encuesta) {
+    public ArrayList<Respuesta> obtenerRespuestasPorEncuesta(int encuesta) throws Exception {
         ArrayList<Respuesta> respuestas = new ArrayList<>();
         try {
             String sqlRespuestas = "select "
@@ -215,25 +219,33 @@ public class Dao {
                 respuestas.add(rt2);
             }
         } catch (SQLException e) {
+            throw new Exception("Error "+e.getMessage());
         }
         return respuestas;
     }
 
-    public void insertarColumnasFijas(String nombreTabla, ColsFijas cf) {
+    public void insertarColumnasFijas(String nombreTabla, ColsFijas cf) throws Exception {
         String sqlInsertar = "insert into %s ( encuesta, periodo, CRN, Profesor, curso) values ('%s','%s','%s','%s','%s');";
         sqlInsertar = String.format(sqlInsertar, nombreTabla, cf.getEncuesta(), cf.getCiclo(), cf.getCrn(), cf.getPidm(), cf.getTssc());
-        db.executeUpdate(sqlInsertar); //this execute the previous insert
+        if( db.executeUpdate(sqlInsertar)  == 0){
+            throw new Exception("Error: Al insertar columnas Fijas ");
+        }
+        
     }
 
-    public void insertarRespuestas(String nombreTabla, Respuesta s, Integer encuesta) {
+    public void insertarRespuestas(String nombreTabla, Respuesta s, Integer encuesta) throws Exception {
         String sqlInsertarRespuestas = "update %s set %s = '%s' where encuesta = %d ;";
         sqlInsertarRespuestas = String.format(sqlInsertarRespuestas, nombreTabla, s.getCodigo(), s.getRespuesta(), encuesta);
-        db.executeUpdate(sqlInsertarRespuestas);
+        if( db.executeUpdate(sqlInsertarRespuestas)  == 0){
+            throw new Exception("Error: Al insertar respuestas ");
+        }
     }
 
-    public void insertarUltimo(String nombreTabla, Integer encuesta) {
+    public void insertarUltimo(String nombreTabla, Integer encuesta) throws Exception {
         String sqlInsertarUltimo = "update %s set ultimo = -1 where encuesta = %d ;";
         sqlInsertarUltimo = String.format(sqlInsertarUltimo, nombreTabla, encuesta);
-        db.executeUpdate(sqlInsertarUltimo);
+        if( db.executeUpdate(sqlInsertarUltimo)  == 0){
+            throw new Exception("Error: Al insertar ultimo (-1) ");
+        }
     }
 }

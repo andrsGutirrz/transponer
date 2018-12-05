@@ -6,7 +6,7 @@
 
 <%@page import="una.cr.transponer.model.Mensaje"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="mensaje" scope="request" class="java.lang.String"/>
+<jsp:useBean id="mensaje" scope="request" class="una.cr.transponer.model.Mensaje"/>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,23 +39,22 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Generar tabla</button>
                 </form>
-            </div> z
-            <%if (!mensaje.equals("-1")) {%>
+            </div> 
+            <%if (!mensaje.getMensaje().equals("-1")) {%>
             <div class="card" id="mensajeRespuesta">
                 <div class="card-header">
                     Alerta!
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title"><%= mensaje %></h5>
-                    <p>Nombre tabla: <%= mensaje %></p>
-                    <p>Instrumento: <%= mensaje %></p>
+                    <h5 class="card-title"><%= mensaje.getMensaje()%></h5>
+                    <p>Nombre tabla: <%= mensaje.getNombreTabla()%></p>
+                    <p>Instrumento: <%= mensaje.getInstrumento()%></p>
                     <p class="card-text">Puede consultar la tabla generada en el siguiente boton:</p>
                     <a href="#" class="btn btn-primary">ver tabla</a>
                 </div>
             </div>
             <%}%>
-        </div>
-
+        </div> <!-- FIN CONTENDIO -->
         <div class="footer">
         </div>
         <script src="/Transponer/js/jquery-3.3.1.min.js"></script>

@@ -49,16 +49,18 @@ public class Direccionamiento extends HttpServlet {
     public void doTransponer(HttpServletRequest request, HttpServletResponse response) {
         try {
             
-            /*Mensaje msj = (Mensaje)request.getAttribute("mensaje");
+            Mensaje msj = (Mensaje)request.getAttribute("mensaje");
             System.out.println("adf: "+msj);
             if (msj == null) {
-                msj.setMensaje("-1");
-            }*/
-            request.setAttribute("mensaje", "-1");
+                msj = new Mensaje("-1","","");
+            }
+            request.setAttribute("mensaje", msj);
             
             request.getRequestDispatcher("view/transponer.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
+            
         }
     }
 

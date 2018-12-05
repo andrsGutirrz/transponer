@@ -49,7 +49,7 @@ public class Logica extends HttpServlet {
             Mensaje msj = new Mensaje(mensaje,nombreTabla,instrumento);            
             request.setAttribute("mensaje", msj);
             
-            this.transponerEvaluaciones(nombreTabla, instrumento);
+            //this.transponerEvaluaciones(nombreTabla, instrumento);
             
             request.getRequestDispatcher("/transponer").forward(request, response);
         } catch (Exception e) {

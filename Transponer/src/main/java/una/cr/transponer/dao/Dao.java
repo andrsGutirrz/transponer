@@ -119,7 +119,7 @@ public class Dao {
                 cursos.add(curso);
             }
         } catch (SQLException e) {
-            throw new Exception("Error "+e.getMessage());
+            throw new Exception("Error " + e.getMessage());
         }
         return cursos;
     }
@@ -161,7 +161,7 @@ public class Dao {
                 columnas.add(fila);
             }
         } catch (SQLException e) {
-            throw new Exception("Error "+e.getMessage());
+            throw new Exception("Error " + e.getMessage());
         }
         return columnas;
     }
@@ -178,7 +178,7 @@ public class Dao {
                 numEncuestas.add(encuesta);
             }
         } catch (SQLException e) {
-            throw new Exception("Error "+e.getMessage());
+            throw new Exception("Error " + e.getMessage());
         }
         return numEncuestas;
     }
@@ -198,7 +198,7 @@ public class Dao {
             rs.next();
             cf = this.ColsFijasBuilder(rs);
         } catch (SQLException e) {
-            throw new Exception("Error "+e.getMessage());
+            throw new Exception("Error " + e.getMessage());
         }
         return cf;
     }
@@ -219,7 +219,7 @@ public class Dao {
                 respuestas.add(rt2);
             }
         } catch (SQLException e) {
-            throw new Exception("Error "+e.getMessage());
+            throw new Exception("Error " + e.getMessage());
         }
         return respuestas;
     }
@@ -227,16 +227,16 @@ public class Dao {
     public void insertarColumnasFijas(String nombreTabla, ColsFijas cf) throws Exception {
         String sqlInsertar = "insert into %s ( encuesta, periodo, CRN, Profesor, curso) values ('%s','%s','%s','%s','%s');";
         sqlInsertar = String.format(sqlInsertar, nombreTabla, cf.getEncuesta(), cf.getCiclo(), cf.getCrn(), cf.getPidm(), cf.getTssc());
-        if( db.executeUpdate(sqlInsertar)  == 0){
+        if (db.executeUpdate(sqlInsertar) == 0) {
             throw new Exception("Error: Al insertar columnas Fijas ");
         }
-        
+
     }
 
     public void insertarRespuestas(String nombreTabla, Respuesta s, Integer encuesta) throws Exception {
         String sqlInsertarRespuestas = "update %s set %s = '%s' where encuesta = %d ;";
         sqlInsertarRespuestas = String.format(sqlInsertarRespuestas, nombreTabla, s.getCodigo(), s.getRespuesta(), encuesta);
-        if( db.executeUpdate(sqlInsertarRespuestas)  == 0){
+        if (db.executeUpdate(sqlInsertarRespuestas) == 0) {
             throw new Exception("Error: Al insertar respuestas ");
         }
     }
@@ -244,8 +244,27 @@ public class Dao {
     public void insertarUltimo(String nombreTabla, Integer encuesta) throws Exception {
         String sqlInsertarUltimo = "update %s set ultimo = -1 where encuesta = %d ;";
         sqlInsertarUltimo = String.format(sqlInsertarUltimo, nombreTabla, encuesta);
-        if( db.executeUpdate(sqlInsertarUltimo)  == 0){
+        if (db.executeUpdate(sqlInsertarUltimo) == 0) {
             throw new Exception("Error: Al insertar ultimo (-1) ");
         }
+    }
+
+    public ArrayList<String> listaNombreTablas() throws Exception {
+        ArrayList<String> ls = new ArrayList<>();
+        String nombre = "";
+        try {
+            String sql = "SELECT table_name FROM information_schema.tables where table_schema='transponer';";
+
+            ResultSet rs = db.executeQuery(sql);
+            while (rs.next()) {
+                nombre = rs.getString("table_name");
+                if (!nombre.equals("saturn_svbtesd") && !nombre.equals("login")) {
+                    ls.add(nombre);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error consultando los nombres de las tablas");
+        }
+        return ls;
     }
 }

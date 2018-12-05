@@ -5,6 +5,9 @@
  */
 package una.cr.transponer.main;
 
+import java.util.ArrayList;
+import una.cr.transponer.dao.Dao;
+
 /**
  *
  * @author Guti
@@ -14,11 +17,16 @@ public class pruebas {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        String s = "IND-4";
-        System.out.println(s.contains("-"));
-        String r = s.replace("-", "");
-        System.out.println(r);
+    public static void main(String[] args) throws Exception {
+        
+        Dao dao = new Dao();
+        
+        ArrayList<String> ls = dao.listaNombreTablas();
+        
+        for (int i = 0; i < ls.size(); i++) {
+            System.out.println(ls.get(i));
+        }
+        
     }
     
 }

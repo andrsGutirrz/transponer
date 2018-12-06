@@ -7,6 +7,7 @@ package una.cr.transponer.main;
 
 import java.util.ArrayList;
 import una.cr.transponer.dao.Dao;
+import una.cr.transponer.model.TablaGenerada;
 
 /**
  *
@@ -19,14 +20,14 @@ public class pruebas {
      */
     public static void main(String[] args) throws Exception {
         
-        Dao dao = new Dao();
+        Dao dao =  Dao.getInstance();
         
-        ArrayList<String> ls = dao.listaNombreTablas();
-        
+        ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
+       
         for (int i = 0; i < ls.size(); i++) {
             System.out.println(ls.get(i));
         }
-        
+
     }
     
 }

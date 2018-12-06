@@ -5,7 +5,6 @@
  */
 package una.cr.transponer.main;
 
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import una.cr.transponer.dao.Dao;
@@ -16,7 +15,7 @@ import una.cr.transponer.model.Respuesta;
 /**
  *
  * @author Andrés Gutiérrez POSGR-03 ECIDEA18 EDDECEG3 EDDLAB18 EDDMVLC5
- * EDDMVCC5 EVDBIM18 IGENER18 
+ * EDDMVCC5 EVDBIM18 IGENER18
  */
 public class Main {
 
@@ -28,12 +27,12 @@ public class Main {
             RelDatabase db;
             db = new RelDatabase();
 
-            Dao dao = new Dao();
+            Dao dao = Dao.getInstance();
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
-            
+
             System.out.println(encuestaPrimera);
-            
+
             ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
 
             dao.crearTabla(nombreTabla, columnas);

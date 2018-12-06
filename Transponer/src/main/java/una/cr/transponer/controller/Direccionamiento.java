@@ -6,13 +6,16 @@
 package una.cr.transponer.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import una.cr.transponer.dao.Dao;
 import una.cr.transponer.model.Mensaje;
+import una.cr.transponer.model.TablaGenerada;
 
 /**
  *
@@ -21,6 +24,8 @@ import una.cr.transponer.model.Mensaje;
 @WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index"})
 @MultipartConfig
 public class Direccionamiento extends HttpServlet {
+
+    Dao dao = Dao.getInstance();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,24 +53,26 @@ public class Direccionamiento extends HttpServlet {
 
     public void doTransponer(HttpServletRequest request, HttpServletResponse response) {
         try {
-            
-            Mensaje msj = (Mensaje)request.getAttribute("mensaje");
-            System.out.println("Msj: "+msj);
+
+            Mensaje msj = (Mensaje) request.getAttribute("mensaje");
+            System.out.println("Msj: " + msj);
             if (msj == null) {
-                msj = new Mensaje("-1","","");
+                msj = new Mensaje("-1", "", "");
             }
             request.setAttribute("mensaje", msj);
-            
+
             request.getRequestDispatcher("view/transponer.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
             System.out.println("Error: " + e);
-            
+
         }
     }
 
     public void doConsultar(HttpServletRequest request, HttpServletResponse response) {
         try {
+            ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
+            request.setAttribute("tablas", ls);
             request.getRequestDispatcher("view/consultar.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request

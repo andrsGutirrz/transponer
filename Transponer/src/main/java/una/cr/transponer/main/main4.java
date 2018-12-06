@@ -29,7 +29,7 @@ public class main4 {
             RelDatabase db;
             db = new RelDatabase();
 
-            Dao dao = new Dao();
+            Dao dao =  Dao.getInstance();
 
             ArrayList<String> columnas = new ArrayList<>();
             ArrayList<Respuesta> resp = new ArrayList<>();

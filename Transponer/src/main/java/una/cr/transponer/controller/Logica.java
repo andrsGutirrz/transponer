@@ -22,9 +22,11 @@ import una.cr.transponer.model.Respuesta;
  *
  * @author Andrés Gutiérrez
  */
-@WebServlet(name = "Logica", urlPatterns = {"/make-transponer"})
+@WebServlet(name = "Logica", urlPatterns = {"/make-transponer", "buscar-tabla"})
 @MultipartConfig
 public class Logica extends HttpServlet {
+
+    Dao dao = Dao.getInstance();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,6 +34,9 @@ public class Logica extends HttpServlet {
         switch (request.getServletPath()) {
             case "/make-transponer":
                 this.doMakeTransponer(request, response);
+                break;
+            case "/buscar-tabla":
+                this.doBuscarTabla(request, response);
                 break;
         }
     }
@@ -44,9 +49,9 @@ public class Logica extends HttpServlet {
             String instrumento = request.getParameter("instrumentos");
 
             mensaje = this.transponerEvaluaciones(nombreTabla, instrumento);
-            
+
             System.out.println("el mensaje es: " + mensaje);
-            
+
             Mensaje msj = new Mensaje(mensaje, nombreTabla, instrumento);
             request.setAttribute("mensaje", msj);
 
@@ -63,8 +68,6 @@ public class Logica extends HttpServlet {
         String mensaje = "Éxito tabla generada!";
         ColsFijas cf = null;
         try {
-
-            Dao dao = new Dao();
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
 
@@ -100,9 +103,22 @@ public class Logica extends HttpServlet {
             mensaje = "Error al procesar las encuestas!";
             return mensaje;
         }
-
         return mensaje;
+    }
 
+    public void doBuscarTabla(HttpServletRequest request, HttpServletResponse response) {
+        String mensaje = "";
+        try {
+
+            String nombreTabla = request.getParameter("tablas");
+
+            String[] parts = nombreTabla.split(" | ", 2);
+            String part1 = parts[0];  // Obtengo el nombre de la consulta
+
+            request.getRequestDispatcher("/consultar").forward(request, response);
+        } catch (Exception e) {
+            response.setStatus(401); //Bad request
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

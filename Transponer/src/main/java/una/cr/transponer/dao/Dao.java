@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
+import una.cr.transponer.model.TablaGenerada;
 
 /**
  *
@@ -20,8 +21,15 @@ public class Dao {
 
     RelDatabase db;
 
-    public Dao() {
+    private static Dao singleton = new Dao();
+
+    //SIGLETON
+    private Dao() {
         db = new RelDatabase();
+    }
+
+    public static Dao getInstance() {
+        return singleton;
     }
 
     //BUILDERS
@@ -249,17 +257,19 @@ public class Dao {
         }
     }
 
-    public ArrayList<String> listaNombreTablas() throws Exception {
-        ArrayList<String> ls = new ArrayList<>();
+    public ArrayList<TablaGenerada> listaNombreTablas() throws Exception {
+        ArrayList<TablaGenerada> ls = new ArrayList<>();
         String nombre = "";
+        String fecha = "";
         try {
-            String sql = "SELECT table_name FROM information_schema.tables where table_schema='transponer';";
+            String sql = "SELECT table_name,create_time FROM information_schema.tables where table_schema='transponer';";
 
             ResultSet rs = db.executeQuery(sql);
             while (rs.next()) {
                 nombre = rs.getString("table_name");
+                fecha = rs.getString("create_time");
                 if (!nombre.equals("saturn_svbtesd") && !nombre.equals("login")) {
-                    ls.add(nombre);
+                    ls.add(new TablaGenerada(nombre, fecha));
                 }
             }
         } catch (SQLException e) {

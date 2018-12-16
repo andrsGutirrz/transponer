@@ -22,10 +22,9 @@ public class pruebas {
         
         Dao dao =  Dao.getInstance();
         
-        ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
-       
-        for (int i = 0; i < ls.size(); i++) {
-            System.out.println(ls.get(i));
+        ArrayList<String> ls = dao.obtenerDatosTabla("ricardo");    
+        for (int i = 0; i < 40; i++) {
+            System.out.print(ls.get(i)+" ");
         }
 
     }

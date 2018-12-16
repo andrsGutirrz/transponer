@@ -277,4 +277,43 @@ public class Dao {
         }
         return ls;
     }
+
+    public ArrayList<String> obtenerDatosTabla(String tabla) throws Exception {
+        ArrayList<String> datos = new ArrayList<>();
+        ArrayList<String> columnas  = this.columnasTabla(tabla);
+        String dato = "";
+        try {
+            String consulta = "select * from %s;";
+            consulta = String.format(consulta, tabla);
+            ResultSet rs = db.executeQuery(consulta);
+            while (rs.next()) {
+                for (int i = 0; i < columnas.size(); i++) {
+                    dato = rs.getString(columnas.get(i));
+                    datos.add(dato);
+                }
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error consultando los nombres de las tablas");
+        }
+        return datos;
+    }
+
+    public ArrayList<String> columnasTabla(String tabla) throws Exception {
+        /*Esta consulta estaria genial, si se hace una sola vez, al inicio de cargar el sistema, mejoriaria el tiempo*/
+        ArrayList<String> ls = new ArrayList<>();
+        String dato = "";
+        try {
+            String consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'transponer' AND TABLE_NAME = '%s';";
+            consulta = String.format(consulta, tabla);
+            ResultSet rs = db.executeQuery(consulta);
+            while (rs.next()) {
+                dato = rs.getString("COLUMN_NAME");
+                ls.add(dato);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error consultando los nombres de las tablas");
+        }
+        return ls;
+    }
+
 }

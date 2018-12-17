@@ -15,9 +15,10 @@
         <jsp:useBean id="tablas" scope="request" type="ArrayList<TablaGenerada>" class="java.util.ArrayList"/>
         <jsp:useBean id="datos" scope="request" type="ArrayList<String>" class="java.util.ArrayList"/>
         <jsp:useBean id="columnas" scope="request" type="ArrayList<String>" class="java.util.ArrayList"/>
-        <script type="text/javascript" src="/Transponer/js/datatables.js"></script>
-        <script type="text/javascript" src="cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="/Transponer/css/datatables.css">
+        <link rel="stylesheet" type="text/css" href="/Transponer/css/buttons.dataTables.css">
+        <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css"> -->
+
     </head>
     <body>
         <div class="contenedor">   
@@ -48,11 +49,11 @@
                             <tr>                                
                                 <%for (int i = 0; i < columnas.size(); i++) {%>
                                 <th scope="col"><%=columnas.get(i)%></th>
-                                <%}%>
+                                    <%}%>
                             </tr>
                         </thead>
                         <tbody>
-                            <%for(int j = 0 ; j<datos.size();j++){%>
+                            <%for (int j = 0; j < datos.size(); j++) {%>
                             <tr>
                                 <%for (int k = 0; k < columnas.size(); k++) {%>
                                 <td><%=datos.get(j++)%></td>
@@ -68,12 +69,32 @@
             <footer class="footer">
             </footer>
         </div> <!-- Container -->
-        <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
+        <%@ include file="includeJQUERY.jsp" %>
     </body>
 </html>
 
 <script>
-$(document).ready( function () {
-    $('#tableResultados').DataTable();
-} );
+
+    $(document).ready(function () {
+        $("#tableResultados").DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            scrollY: 420,
+            scrollX: 370,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+
 </script>
+
+<style>
+    #tableResultados{
+        width: 100%;
+        font-size: 10px;
+    }
+    th{
+        font-size: 10px;
+    }
+</style>

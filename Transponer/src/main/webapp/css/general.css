@@ -14,7 +14,6 @@
     margin-bottom: 0px;*/
 }
 
-
 .backg-logo h1{
     color: white;
     text-align: right; 
@@ -28,7 +27,7 @@
 
 .contenido{
     border: #3d3d3d solid 5px;
-    height: 550px;
+    height: 650px;
 }
 
 .contenidoLogin{
@@ -90,21 +89,22 @@ h1{
 }
 
 .consultaForm{
-    width: 25%;
-    height: 25%;
-    border: green solid 5px;
+    width: 22%;
+    height: 22%;
+    /*border: green solid 1px;*/
     /*display: inline-block; */
-    margin: 15px 7px 1px 15px; 
+    margin: 10px 4px 1px 5px; 
     float:left;
-    padding:15px;
+    padding:5px;
 }
 
 .resultados{
-    width: 70%;
-    height: 95%;
-    border: purple solid 5px;
+    width: 75%;
+    height: 99%;
+    /*border: purple solid 1px;*/
     /*display: inline-block;*/
-    margin: 15px 7px 1px 15px; 
+    margin: 10px 4px 1px 2px; 
     float:left;
     text-align: center;
+    padding: 15px;
 }

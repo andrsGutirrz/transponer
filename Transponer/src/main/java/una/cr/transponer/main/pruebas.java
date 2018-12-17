@@ -19,14 +19,14 @@ public class pruebas {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        
-        Dao dao =  Dao.getInstance();
-        
-        ArrayList<String> ls = dao.obtenerDatosTabla("ricardo");    
+
+        Dao dao = Dao.getInstance();
+        ArrayList<String> cols = dao.columnasTabla("ricardo");
+        ArrayList<String> ls = dao.obtenerDatosTabla("ricardo",cols);    
         for (int i = 0; i < 40; i++) {
             System.out.print(ls.get(i)+" ");
         }
-
+        
     }
-    
+
 }

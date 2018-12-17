@@ -110,11 +110,17 @@ public class Logica extends HttpServlet {
         String mensaje = "";
         try {
 
-            String nombreTabla = request.getParameter("tablas");
+            String combo = request.getParameter("tablas");
 
-            String[] parts = nombreTabla.split(" | ", 2);
-            String part1 = parts[0];  // Obtengo el nombre de la consulta
-
+            String[] parts = combo.split(" | ", 2);
+            String nombreTabla = parts[0];  // Obtengo el nombre de la consulta
+            
+            ArrayList<String> cols = dao.columnasTabla(nombreTabla);
+            ArrayList<String> ls = dao.obtenerDatosTabla("ricardo",cols);   
+            
+            request.setAttribute("columnas", cols);
+            request.setAttribute("datos", ls);
+            
             request.getRequestDispatcher("/consultar").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request

@@ -278,9 +278,9 @@ public class Dao {
         return ls;
     }
 
-    public ArrayList<String> obtenerDatosTabla(String tabla) throws Exception {
+    public ArrayList<String> obtenerDatosTabla(String tabla,ArrayList<String> cols) throws Exception {
         ArrayList<String> datos = new ArrayList<>();
-        ArrayList<String> columnas  = this.columnasTabla(tabla);
+        ArrayList<String> columnas  = cols;
         String dato = "";
         try {
             String consulta = "select * from %s;";

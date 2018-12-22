@@ -5,12 +5,16 @@
  */
 package una.cr.transponer.dao;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 import una.cr.transponer.model.TablaGenerada;
+import una.cr.transponer.model.Usuario;
+import una.cr.transponer.model.Validate;
 
 /**
  *
@@ -315,5 +319,25 @@ public class Dao {
         }
         return ls;
     }
-
+    
+    public boolean login(String usr, String clv) throws SQLException{
+        Usuario usuario = null;
+        String consulta = "select  * from usuarios where username = '%s' ";
+        consulta = String.format(consulta, usr);
+        
+        String pass = "";
+                
+        ResultSet rs = db.executeQuery(consulta);
+            while (rs.next()) {
+                int id = rs.getInt("id"); // no tan requerido
+                String user = rs.getString("username");
+                pass =  rs.getString("clave");
+                boolean act = rs.getBoolean("activo");
+                usuario = new Usuario(id, user, pass, act);
+            }
+            String cl = Hashing.sha1().hashString(clv, Charsets.UTF_8).toString();
+            if(usuario == null){System.out.println("null weon");}
+            if(usuario != null){System.out.println("not null weon");}
+        return cl.equals(pass) && usuario.activo == true;
+    }
 }

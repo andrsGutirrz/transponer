@@ -5,6 +5,8 @@
  */
 package una.cr.transponer.main;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import java.util.ArrayList;
 import una.cr.transponer.dao.Dao;
 import una.cr.transponer.model.TablaGenerada;
@@ -21,12 +23,8 @@ public class pruebas {
     public static void main(String[] args) throws Exception {
 
         Dao dao = Dao.getInstance();
-        ArrayList<String> cols = dao.columnasTabla("ricardo");
-        ArrayList<String> ls = dao.obtenerDatosTabla("ricardo",cols);    
-        for (int i = 0; i < 40; i++) {
-            System.out.print(ls.get(i)+" ");
-        }
-        
+       
+        System.out.println("El sha1 : " + Hashing.sha1().hashString("andres", Charsets.UTF_8).toString());
     }
 
 }

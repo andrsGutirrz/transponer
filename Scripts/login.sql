@@ -3,15 +3,14 @@
 use transponer;
 
 
-create table transponer.login(
+create table transponer.usuarios(
     id INT AUTO_INCREMENT not null,
-	username varchar(30) not null,
+	username varchar(30) not null UNIQUE,
 	clave varchar(40) not null,
 	activo boolean not null, 
-	CONSTRAINT PK_transponer_login PRIMARY KEY (id)
+	CONSTRAINT PK_transponer_usuarios PRIMARY KEY (id)
 );
 
--- insert into transponer.login(username,clave,activo) values ('ricardo',SHA('ricardo'),1);
-insert into transponer.login(username,clave,activo) values ('ricardo','ricardo',1);
+insert into transponer.login(username,clave,activo) values ('ricardo',SHA1('ricardo'),1);
 
 select * from transponer.login;

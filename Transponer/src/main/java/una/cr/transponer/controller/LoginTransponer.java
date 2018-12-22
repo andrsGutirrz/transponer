@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import una.cr.transponer.dao.Dao;
 
 /**
  *
@@ -26,16 +27,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LoginTransponer", urlPatterns = {"/LoginTransponer"})
 @MultipartConfig
 public class LoginTransponer extends HttpServlet {
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+     Dao dao = Dao.getInstance();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");        
@@ -52,7 +45,7 @@ public class LoginTransponer extends HttpServlet {
            //  HttpSession s = request.getSession(true);
             String username = request.getParameter("username");
             String password = request.getParameter("pass");
-            System.out.println(username + " " + password);
+            System.out.println(dao.login(username, password));
             request.getRequestDispatcher("view/index.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request

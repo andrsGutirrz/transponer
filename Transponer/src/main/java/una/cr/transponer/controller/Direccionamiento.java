@@ -21,7 +21,7 @@ import una.cr.transponer.model.TablaGenerada;
  *
  * @author Andrés Gutiérrez
  */
-@WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index"})
+@WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index","/login"})
 @MultipartConfig
 public class Direccionamiento extends HttpServlet {
 
@@ -40,6 +40,9 @@ public class Direccionamiento extends HttpServlet {
             case "/consultar":
                 this.doConsultar(request, response);
                 break;
+            case "/login":
+                this.doHome(request, response);
+                break;
         }
     }
 
@@ -50,12 +53,19 @@ public class Direccionamiento extends HttpServlet {
             response.setStatus(401); //Bad request
         }
     }
+    
+        public void doHome (HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);//*
+        } catch (Exception e) {
+            response.setStatus(401); //Bad request
+        }
+    }
 
     public void doTransponer(HttpServletRequest request, HttpServletResponse response) {
         try {
 
             Mensaje msj = (Mensaje) request.getAttribute("mensaje");
-            System.out.println("Msj: " + msj);
             if (msj == null) {
                 msj = new Mensaje("-1", "", "");
             }

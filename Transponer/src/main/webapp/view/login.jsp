@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body">
                     <div class="loginform">
-                        <form action="/Transponer/LoginTransponer" method="post">
+                        <form action="/Transponer/home" method="post">
                             <div class="form-group">
                                 <label for="username">Nombre de usuario</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">

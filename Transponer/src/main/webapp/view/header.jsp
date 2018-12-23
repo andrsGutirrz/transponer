@@ -4,6 +4,7 @@
     Author     : Andrés Gutiérrez
 --%>
 
+<%@page import="una.cr.transponer.model.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
@@ -29,6 +30,9 @@
                 </li>
             </ul>
         </div>
+        <% Usuario l = (Usuario) session.getAttribute("usuario");%>
+        <p>Usuario:  <%= l.username%> </p>
+        <a href="logout">Salir</a>
     </nav>
 </div>
 

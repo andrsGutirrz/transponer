@@ -320,24 +320,19 @@ public class Dao {
         return ls;
     }
     
-    public boolean login(String usr, String clv) throws SQLException{
+    public Usuario login (String usr, String clv) throws SQLException{
         Usuario usuario = null;
         String consulta = "select  * from usuarios where username = '%s' ";
         consulta = String.format(consulta, usr);
-        
-        String pass = "";
-                
+
         ResultSet rs = db.executeQuery(consulta);
             while (rs.next()) {
                 int id = rs.getInt("id"); // no tan requerido
                 String user = rs.getString("username");
-                pass =  rs.getString("clave");
+                 String pass =  rs.getString("clave");
                 boolean act = rs.getBoolean("activo");
                 usuario = new Usuario(id, user, pass, act);
             }
-            String cl = Hashing.sha1().hashString(clv, Charsets.UTF_8).toString();
-            if(usuario == null){System.out.println("null weon");}
-            if(usuario != null){System.out.println("not null weon");}
-        return cl.equals(pass) && usuario.activo == true;
+        return usuario;
     }
 }

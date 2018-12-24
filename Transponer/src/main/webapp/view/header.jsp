@@ -31,8 +31,16 @@
             </ul>
         </div>
         <% Usuario l = (Usuario) session.getAttribute("usuario");%>
-        <p>Usuario:  <%= l.username%> </p>
-        <a href="logout">Salir</a>
+        <div class="row">
+            <div class="col-md-12">
+                <span>Usuario:  <%= l.username%> </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="logout">&nbsp;&nbsp;Salir</a>
+            </div>
+        </div>
     </nav>
 </div>
 

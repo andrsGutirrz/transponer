@@ -16,7 +16,7 @@
     <body>
         <div class="header">                           
             <div class="backg-logo">   
-                <img class="img-fluid" src="../images/logo.png" alt="logo-vicerrectoria" id="logo">  
+                <img class="img-fluid" src="/Transponer/images/logo.png" alt="logo-vicerrectoria" id="logo">  
                 <h1>Transponer</h1>
             </div>
         </div>
@@ -28,13 +28,13 @@
                 </div>
                 <div class="card-body">
                     <div class="loginform">
-                        <form action="/Transponer/home" method="post">
+                        <form action="/Transponer/home" method="post" id="formLogin">
                             <div class="form-group">
-                                <label for="username">Nombre de usuario</label>
+                                <label for="username" id="labelUserName">Nombre de usuario</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">
                             </div>
                             <div class="form-group">
-                                <label for="pass">Contraseña</label>
+                                <label for="pass" id="labelPass">Contraseña</label>
                                 <input type="password" class="form-control" id="pass" name="pass" placeholder="Ingrese su contraseña">
                             </div>
                             <button type="submit" class="btn btn-primary">Ingresar</button>
@@ -45,6 +45,7 @@
         </div> <!-- Container -->
         <footer class="footer">
         </footer>
-        <script src="../js/jquery-3.3.1.min"></script>
+        <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
+        <script src="/Transponer/js/login.js"></script>
     </body>
 </html>

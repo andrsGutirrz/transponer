@@ -17,6 +17,7 @@ import una.cr.transponer.dao.Dao;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Mensaje;
 import una.cr.transponer.model.Respuesta;
+import una.cr.transponer.model.TablaGenerada;
 
 /**
  *
@@ -50,8 +51,6 @@ public class Logica extends HttpServlet {
 
             mensaje = this.transponerEvaluaciones(nombreTabla, instrumento);
 
-            System.out.println("el mensaje es: " + mensaje);
-
             Mensaje msj = new Mensaje(mensaje, nombreTabla, instrumento);
             request.setAttribute("mensaje", msj);
 
@@ -68,6 +67,8 @@ public class Logica extends HttpServlet {
         String mensaje = "Éxito tabla generada!";
         ColsFijas cf = null;
         try {
+            
+            if(this.existeNombreTabla(nombreTabla)){return "Existe tabla con el mismo nombre -> " + nombreTabla ;}
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
 
@@ -125,6 +126,16 @@ public class Logica extends HttpServlet {
         } catch (Exception e) {
             response.setStatus(401); //Bad request
         }
+    }
+    
+    public boolean existeNombreTabla(String nombre) throws Exception{
+        ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
+        for (int i = 0; i < ls.size(); i++) {
+            if(ls.get(i).getNombre().equals(nombre)){
+                return true;
+            }
+        }
+        return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

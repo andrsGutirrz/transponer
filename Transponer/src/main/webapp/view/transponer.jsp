@@ -16,14 +16,14 @@
         <%@ include file="header.jsp" %>
         <div class="contenido">
             <div class="formulario ctrHor">
-                <form action="/Transponer/make-transponer" method="post">
+                <form action="/Transponer/make-transponer" method="post" id="formTransponer">
                     <div class="form-row">
                         <div class="form-group col-md-7">
-                            <label for="nombreTabla">Nombre de la tabla</label>
+                            <label for="nombreTabla" id="labelNombreTabla" class="">Nombre de la tabla</label>
                             <input type="text" class="form-control" id="nombreTabla" name="nombreTabla">
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="instrumentos">Instrumento</label>
+                            <label for="instrumentos" id="labelInstrumentos">Instrumento</label>
                             <select id="instrumentos" class="form-control" name="instrumentos">
                                 <option selected>Escoger...</option>
                                 <option>POSGR-03</option>
@@ -37,20 +37,18 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Generar tabla</button>
+                    <button id="enviar" type="submit" class="btn btn-primary">Generar tabla</button>
                 </form>
             </div> 
             <%if (!mensaje.getMensaje().equals("-1")) {%>
             <div class="card" id="mensajeRespuesta">
-                <div class="card-header">
+                <div class="card-header bg-secondary">
                     Alerta!
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><%= mensaje.getMensaje()%></h5>
                     <p>Nombre tabla: <%= mensaje.getNombreTabla()%></p>
                     <p>Instrumento: <%= mensaje.getInstrumento()%></p>
-                    <p class="card-text">Puede consultar la tabla generada en el siguiente boton:</p>
-                    <a href="#" class="btn btn-primary">ver tabla</a>
                 </div>
             </div>
             <%}%>
@@ -58,13 +56,6 @@
         <div class="footer">
         </div>
         <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
+        <script src="/Transponer/js/transponer.js"></script>
     </body>
 </html>
-
-
-<script>
-// A $( document ).ready() block.
-    $(document).ready(function () {
-        console.log("ready!");
-    });
-</script>

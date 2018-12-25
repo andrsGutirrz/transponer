@@ -53,8 +53,7 @@
             </div>
             <%}%>
         </div> <!-- FIN CONTENDIO -->
-        <div class="footer">
-        </div>
+        <%@ include file="footer.jsp" %>
         <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
         <script src="/Transponer/js/transponer.js"></script>
     </body>

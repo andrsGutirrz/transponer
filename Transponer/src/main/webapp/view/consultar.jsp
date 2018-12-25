@@ -41,11 +41,28 @@
                             </div>
                         </div>
                     </form> 
+                    <!-- -->
+                    <form action="/Transponer/buscar-tabla" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <select id="tablas" class="form-control" name="tablas">
+                                    <option selected>Escoger...</option>
+                                    <%for (TablaGenerada g : tablas) {%>
+                                    <option><%= g.getNombre() + " | " + g.getFecha()%></option>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+                    </form> 
                 </div>
+
                 <div class="resultados">
                     <%if (datos.size() != 0) {%>
                     <table class="table table-striped" id="tableResultados">
-                        <thead class="thead-dark">
+                        <thead class=""> <!-- thead-dark -->
                             <tr>                                
                                 <%for (int i = 0; i < columnas.size(); i++) {%>
                                 <th scope="col"><%=columnas.get(i)%></th>
@@ -66,8 +83,7 @@
                     <%}%>
                 </div>
             </div>
-            <footer class="footer">
-            </footer>
+            <%@ include file="footer.jsp" %>
         </div> <!-- Container -->
         <%@ include file="includeJQUERY.jsp" %>
     </body>

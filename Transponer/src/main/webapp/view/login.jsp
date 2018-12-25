@@ -43,8 +43,7 @@
                 </div>
             </div>
         </div> <!-- Container -->
-        <footer class="footer">
-        </footer>
+        <%@ include file="footer.jsp" %>
         <script src="/Transponer/js/jquery-3.3.1.min.js"></script>
         <script src="/Transponer/js/login.js"></script>
     </body>

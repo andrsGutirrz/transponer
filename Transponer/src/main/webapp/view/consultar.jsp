@@ -8,6 +8,9 @@
 <%@page import="java.util.ArrayList"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<jsp:useBean id="errorBorrar" scope="request" class="java.lang.String"/>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,8 +20,6 @@
         <jsp:useBean id="columnas" scope="request" type="ArrayList<String>" class="java.util.ArrayList"/>
         <link rel="stylesheet" type="text/css" href="/Transponer/css/datatables.css">
         <link rel="stylesheet" type="text/css" href="/Transponer/css/buttons.dataTables.css">
-        <!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css"> -->
-
     </head>
     <body>
         <div class="contenedor">   
@@ -42,7 +43,9 @@
                         </div>
                     </form> 
                     <!-- -->
-                    <form action="/Transponer/buscar-tabla" method="post">
+                    <hr>
+                    <p>Eliminar Tabla</p>
+                    <form action="/Transponer/eliminar-tabla" method="post">
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <select id="tablas" class="form-control" name="tablas">
@@ -53,13 +56,25 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary">Buscar</button>
+                                <button type="submit" class="btn btn-primary">Eliminar</button>
                             </div>
                         </div>
                     </form> 
                 </div>
 
                 <div class="resultados">
+                    <div class="mensajes">
+                        <%if (!errorBorrar.isEmpty()) {%>
+                        <div class="card" id="mensajeRespuesta">
+                            <div class="card-header bg-secondary ">
+                                Alerta!
+                            </div>
+                            <div class="card-body">
+                                <p> <%= errorBorrar %> </p>
+                            </div>
+                        </div>
+                        <%}%>
+                    </div>
                     <%if (datos.size() != 0) {%>
                     <table class="table table-striped" id="tableResultados">
                         <thead class=""> <!-- thead-dark -->
@@ -86,31 +101,6 @@
             <%@ include file="footer.jsp" %>
         </div> <!-- Container -->
         <%@ include file="includeJQUERY.jsp" %>
+        <script src="/Transponer/js/consultar.js"></script>
     </body>
 </html>
-
-<script>
-
-    $(document).ready(function () {
-        $("#tableResultados").DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            scrollY: 420,
-            scrollX: 370,
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-    });
-
-</script>
-
-<style>
-    #tableResultados{
-        width: 100%;
-        font-size: 10px;
-    }
-    th{
-        font-size: 10px;
-    }
-</style>

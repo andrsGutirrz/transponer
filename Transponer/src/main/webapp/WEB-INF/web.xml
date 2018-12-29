@@ -29,7 +29,8 @@
         <servlet-name>Logica</servlet-name>
         <url-pattern>/Logica</url-pattern>
         <url-pattern>/make-transponer</url-pattern>
-        <url-pattern>/buscar-tabla</url-pattern>        
+        <url-pattern>/buscar-tabla</url-pattern>  
+        <url-pattern>/eliminar-tabla</url-pattern>       
     </servlet-mapping>
     <session-config>
         <session-timeout>

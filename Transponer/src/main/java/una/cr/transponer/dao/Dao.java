@@ -272,7 +272,7 @@ public class Dao {
             while (rs.next()) {
                 nombre = rs.getString("table_name");
                 fecha = rs.getString("create_time");
-                if (!nombre.equals("saturn_svbtesd") && !nombre.equals("login")) {
+                if (!nombre.equals("saturn_svbtesd") && !nombre.equals("usuarios")) {
                     ls.add(new TablaGenerada(nombre, fecha));
                 }
             }
@@ -282,9 +282,9 @@ public class Dao {
         return ls;
     }
 
-    public ArrayList<String> obtenerDatosTabla(String tabla,ArrayList<String> cols) throws Exception {
+    public ArrayList<String> obtenerDatosTabla(String tabla, ArrayList<String> cols) throws Exception {
         ArrayList<String> datos = new ArrayList<>();
-        ArrayList<String> columnas  = cols;
+        ArrayList<String> columnas = cols;
         String dato = "";
         try {
             String consulta = "select * from %s;";
@@ -319,20 +319,30 @@ public class Dao {
         }
         return ls;
     }
-    
-    public Usuario login (String usr, String clv) throws SQLException{
+
+    public Usuario login(String usr, String clv) throws SQLException {
         Usuario usuario = null;
         String consulta = "select  * from usuarios where username = '%s' ";
         consulta = String.format(consulta, usr);
 
         ResultSet rs = db.executeQuery(consulta);
-            while (rs.next()) {
-                int id = rs.getInt("id"); // no tan requerido
-                String user = rs.getString("username");
-                 String pass =  rs.getString("clave");
-                boolean act = rs.getBoolean("activo");
-                usuario = new Usuario(id, user, pass, act);
-            }
+        while (rs.next()) {
+            int id = rs.getInt("id"); // no tan requerido
+            String user = rs.getString("username");
+            String pass = rs.getString("clave");
+            boolean act = rs.getBoolean("activo");
+            usuario = new Usuario(id, user, pass, act);
+        }
         return usuario;
+    }
+
+    public void eliminarTabla(String nombreTabla) throws Exception {
+        String sql = "DROP TABLE %s";
+        sql = String.format(sql, nombreTabla);
+        System.out.println("Consulta: " + sql);
+        boolean resultado = db.executeBorrarTabla(sql);
+        if (!resultado) {
+            throw new Exception("Error al borrar la tabla");
+        }
     }
 }

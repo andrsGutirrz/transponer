@@ -7,6 +7,8 @@ package una.cr.transponer.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +32,7 @@ public class Logica extends HttpServlet {
     Dao dao = Dao.getInstance();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         switch (request.getServletPath()) {
             case "/make-transponer":
@@ -38,6 +40,9 @@ public class Logica extends HttpServlet {
                 break;
             case "/buscar-tabla":
                 this.doBuscarTabla(request, response);
+                break;
+            case "/eliminar-tabla":
+                this.doEliminarTabla(request, response);
                 break;
         }
     }
@@ -67,8 +72,10 @@ public class Logica extends HttpServlet {
         String mensaje = "Éxito tabla generada!";
         ColsFijas cf = null;
         try {
-            
-            if(this.existeNombreTabla(nombreTabla)){return "Existe tabla con el mismo nombre -> " + nombreTabla ;}
+
+            if (this.existeNombreTabla(nombreTabla)) {
+                return "Existe tabla con el mismo nombre -> " + nombreTabla;
+            }
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
 
@@ -108,30 +115,48 @@ public class Logica extends HttpServlet {
     }
 
     public void doBuscarTabla(HttpServletRequest request, HttpServletResponse response) {
-        String mensaje = "";
         try {
 
             String combo = request.getParameter("tablas");
 
             String[] parts = combo.split(" | ", 2);
             String nombreTabla = parts[0];  // Obtengo el nombre de la consulta
-            
+
             ArrayList<String> cols = dao.columnasTabla(nombreTabla);
-            ArrayList<String> ls = dao.obtenerDatosTabla("ricardo",cols);   
-            
+            ArrayList<String> ls = dao.obtenerDatosTabla(nombreTabla,cols);
+
             request.setAttribute("columnas", cols);
             request.setAttribute("datos", ls);
-            
+
             request.getRequestDispatcher("/consultar").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
         }
     }
-    
-    public boolean existeNombreTabla(String nombre) throws Exception{
+
+    public void doEliminarTabla(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+
+            String combo = request.getParameter("tablas");
+
+            String[] parts = combo.split(" | ", 2);
+            String nombreTabla = parts[0];  // Obtengo el nombre de la consulta
+
+            dao.eliminarTabla(nombreTabla);
+            request.setAttribute("errorBorrar", "Tabla borrada con éxito!");
+
+            request.getRequestDispatcher("/consultar").forward(request, response);
+
+        } catch (Exception e) {
+            request.setAttribute("errorBorrar", e.getMessage());
+            request.getRequestDispatcher("/consultar").forward(request, response);
+        }
+    }
+
+    public boolean existeNombreTabla(String nombre) throws Exception {
         ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
         for (int i = 0; i < ls.size(); i++) {
-            if(ls.get(i).getNombre().equals(nombre)){
+            if (ls.get(i).getNombre().equals(nombre)) {
                 return true;
             }
         }
@@ -150,7 +175,11 @@ public class Logica extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -164,7 +193,11 @@ public class Logica extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(Logica.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

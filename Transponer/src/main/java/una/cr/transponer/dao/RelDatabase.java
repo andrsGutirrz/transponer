@@ -11,11 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 public class RelDatabase {
 
-    public static final String PROPERTIES_FILE_NAME = "/mochilear.properties";
     Connection cnx;
 
     public RelDatabase() {
@@ -42,6 +39,7 @@ public class RelDatabase {
             stm.executeUpdate(statement);
             return stm.getUpdateCount();
         } catch (SQLException ex) {
+            System.out.println("Error doloroso: " + ex.getMessage());
             return 0;
         }
     }
@@ -71,6 +69,15 @@ public class RelDatabase {
         try {
             Statement stm = cnx.createStatement();
             return stm.execute(statement);
+        } catch (SQLException ex) {
+        }
+        return false;
+    }
+
+    public boolean executeBorrarTabla(String statement) {
+        try {
+            Statement stm = cnx.createStatement();
+            return !stm.execute(statement);
         } catch (SQLException ex) {
         }
         return false;

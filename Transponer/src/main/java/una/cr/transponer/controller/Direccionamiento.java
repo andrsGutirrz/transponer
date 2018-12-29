@@ -13,15 +13,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import una.cr.transponer.dao.Dao;
 import una.cr.transponer.model.Mensaje;
 import una.cr.transponer.model.TablaGenerada;
+import una.cr.transponer.model.Usuario;
 
 /**
  *
  * @author Andrés Gutiérrez
  */
-@WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index","/login"})
+@WebServlet(name = "Direccionamiento", urlPatterns = {"/consultar", "/transponer", "/index", "/login"})
 @MultipartConfig
 public class Direccionamiento extends HttpServlet {
 
@@ -53,9 +55,14 @@ public class Direccionamiento extends HttpServlet {
             response.setStatus(401); //Bad request
         }
     }
-    
-        public void doHome (HttpServletRequest request, HttpServletResponse response) {
+
+    public void doHome(HttpServletRequest request, HttpServletResponse response) {
         try {
+            HttpSession s = request.getSession(true);
+            Usuario usr = (Usuario) s.getAttribute("usuario");
+            if (usr != null) {
+                request.getRequestDispatcher("view/index.jsp").forward(request, response);//*
+            }
             request.getRequestDispatcher("view/login.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request

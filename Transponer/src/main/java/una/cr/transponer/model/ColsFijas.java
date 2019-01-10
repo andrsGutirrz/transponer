@@ -15,6 +15,32 @@ public class ColsFijas {
     String crn;
     String pidm;
     String tssc;
+    //nuevas columnas
+    String nombreProfesor;
+    String cedulaProfesor;
+    String nombreCurso;
+    String escuela;
+    String facultad;
+    String cupo;
+    String matricula;
+    String codigoCurso;
+    String campus;
+
+    public String getCampus() {
+        return campus;
+    }
+
+    public void setCampus(String campus) {
+        this.campus = campus;
+    }
+
+    public String getCodigoCurso() {
+        return codigoCurso;
+    }
+
+    public void setCodigoCurso(String codigoCurso) {
+        this.codigoCurso = codigoCurso;
+    }
 
     public ColsFijas(String encuesta, String ciclo, String crn, String pidm, String tssc) {
         this.encuesta = encuesta;
@@ -22,6 +48,62 @@ public class ColsFijas {
         this.crn = crn;
         this.pidm = pidm;
         this.tssc = tssc;
+    }
+
+    public String getNombreProfesor() {
+        return nombreProfesor;
+    }
+
+    public void setNombreProfesor(String nombreProfesor) {
+        this.nombreProfesor = nombreProfesor;
+    }
+
+    public String getCedulaProfesor() {
+        return cedulaProfesor;
+    }
+
+    public void setCedulaProfesor(String cedulaProfesor) {
+        this.cedulaProfesor = cedulaProfesor;
+    }
+
+    public String getNombreCurso() {
+        return nombreCurso;
+    }
+
+    public void setNombreCurso(String nombreCurso) {
+        this.nombreCurso = nombreCurso;
+    }
+
+    public String getEscuela() {
+        return escuela;
+    }
+
+    public void setEscuela(String escuela) {
+        this.escuela = escuela;
+    }
+
+    public String getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(String facultad) {
+        this.facultad = facultad;
+    }
+
+    public String getCupo() {
+        return cupo;
+    }
+
+    public void setCupo(String cupo) {
+        this.cupo = cupo;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     public ColsFijas() {
@@ -69,9 +151,10 @@ public class ColsFijas {
 
     @Override
     public String toString() {
-        return "ColsFijas{" + "encuesta=" + encuesta + ", ciclo=" + ciclo + ", crn=" + crn + ", pidm=" + pidm + ", tssc=" + tssc + '}';
+        return "ColsFijas{" + "encuesta=" + encuesta + ", ciclo=" + ciclo + ", crn=" + crn + ", pidm=" + pidm + ", tssc=" + tssc + ", nombreProfesor=" + nombreProfesor + ", cedulaProfesor=" + cedulaProfesor + ", nombreCurso=" + nombreCurso + ", escuela=" + escuela + ", facultad=" + facultad + ", cupo=" + cupo + ", matricula=" + matricula + ", codigoCurso=" + codigoCurso + ", campus=" + campus + '}';
     }
-    
+
+
     
     
 }

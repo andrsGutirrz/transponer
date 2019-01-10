@@ -93,11 +93,11 @@ public class Logica extends HttpServlet {
                 for (Integer i : numEncuestas) {
 
                     cf = dao.obtenerColumnasFijas(i);
+                    cf = dao.insertarColumnasFaltantes(cf);
                     ArrayList<Respuesta> resp2 = dao.obtenerRespuestasPorEncuesta(i);
                     dao.insertarColumnasFijas(nombreTabla, cf);
 
                     for (Respuesta s : resp2) {
-                        //System.out.println(s);
                         dao.insertarRespuestas(nombreTabla, s, i);
                     }
 

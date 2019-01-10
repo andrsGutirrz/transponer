@@ -93,6 +93,16 @@ public class Dao {
         consulta.append("CRN varchar(10), ");
         consulta.append("Profesor varchar(10), ");
         consulta.append("curso varchar(10), ");
+        //nuevos
+        consulta.append("nombreProfesor varchar(100), ");
+        consulta.append("cedulaProfesor varchar(15),");
+        consulta.append("nombreCurso varchar(100), ");
+        consulta.append("escuela varchar(100), ");
+        consulta.append("facultad varchar(100), ");
+        consulta.append("campus varchar(100), ");
+        consulta.append("cupo varchar(100), ");
+        consulta.append("matricula varchar(100),");
+        consulta.append("codigoCurso varchar(100),");
 
         for (String s : columnas) {
             consulta.append(s);
@@ -237,12 +247,58 @@ public class Dao {
     }
 
     public void insertarColumnasFijas(String nombreTabla, ColsFijas cf) throws Exception {
-        String sqlInsertar = "insert into %s ( encuesta, periodo, CRN, Profesor, curso) values ('%s','%s','%s','%s','%s');";
-        sqlInsertar = String.format(sqlInsertar, nombreTabla, cf.getEncuesta(), cf.getCiclo(), cf.getCrn(), cf.getPidm(), cf.getTssc());
+        String sqlInsertar = "insert into %s ( "
+                + "encuesta, periodo, "
+                + "CRN, Profesor, curso, "
+                + "nombreProfesor,cedulaProfesor,"
+                + "nombreCurso,escuela,"
+                + "facultad,cupo,"
+                + "matricula,codigoCurso,campus "
+                + ") "
+                + "values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');";
+        sqlInsertar = String.format(sqlInsertar, nombreTabla, cf.getEncuesta(), cf.getCiclo(), 
+                cf.getCrn(), cf.getPidm(), cf.getTssc(),cf.getNombreProfesor(),cf.getCedulaProfesor(),
+                cf.getNombreCurso(),cf.getEscuela(),cf.getFacultad(),cf.getCupo(),cf.getMatricula(),
+                cf.getCodigoCurso(),cf.getCampus()
+                );
+        System.out.println(cf);
         if (db.executeUpdate(sqlInsertar) == 0) {
             throw new Exception("Error: Al insertar columnas Fijas ");
         }
+    }
+    
+    public ColsFijas insertarColumnasFaltantes(ColsFijas cf) throws Exception{
+    try {
 
+            String sql = "select SSBSECT_SUBJ_CODE cod1,SSBSECT_CRSE_NUMB cod2, "
+                    + "SSBSECT_MAX_ENRL cupo,SSBSECT_ENRL matricula, "
+                    + "SSBSECT_CAMP_CODE campus, " +
+                    "SCBCRSE_COLL_CODE escuela,SCBCRSE_DIVS_CODE facultad, "
+                    + "SCBCRSE_TITLE nombreCurso, " +
+                    "SPRIDEN_ID cedula,SPRIDEN_LAST_NAME apellido,SPRIDEN_FIRST_NAME nombre " +
+                    "from saturn_ssbsect,saturn_scbcrse,saturn_spriden1 " +
+                    "where SSBSECT_TERM_CODE = %s and  SSBSECT_CRN = %s " +
+                    "and SSBSECT_SUBJ_CODE = SCBCRSE_SUBJ_CODE and SSBSECT_CRSE_NUMB = SCBCRSE_CRSE_NUMB " +
+                    "and SPRIDEN_PIDM = %s;";
+            sql = String.format(sql, cf.getCiclo(),cf.getCrn(),cf.getPidm());
+            System.out.println(sql);
+            ResultSet rs = db.executeQuery(sql);
+            while (rs.next()) {
+                cf.setCodigoCurso(rs.getString("cod1")+rs.getString("cod2"));
+                cf.setCedulaProfesor(rs.getString("cedula"));
+                cf.setCupo(rs.getString("cupo"));
+                cf.setMatricula(rs.getString("matricula"));
+                cf.setNombreProfesor(rs.getString("apellido")+rs.getString("nombre"));
+                cf.setEscuela(rs.getString("escuela"));
+                cf.setFacultad(rs.getString("facultad"));
+                cf.setCampus(rs.getString("campus"));
+                cf.setNombreCurso(rs.getString("nombreCurso"));
+            }
+            return cf;
+        } catch (SQLException e) {
+            throw new Exception("Error " + e.getMessage());
+        }
+    
     }
 
     public void insertarRespuestas(String nombreTabla, Respuesta s, Integer encuesta) throws Exception {

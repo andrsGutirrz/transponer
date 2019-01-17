@@ -328,7 +328,7 @@ public class Dao {
             while (rs.next()) {
                 nombre = rs.getString("table_name");
                 fecha = rs.getString("create_time");
-                if (!nombre.equals("saturn_svbtesd") && !nombre.equals("usuarios")) {
+                if (!nombre.equals("saturn_svbtesd") && !nombre.equals("usuarios") && !nombre.contains("saturn")) {
                     ls.add(new TablaGenerada(nombre, fecha));
                 }
             }

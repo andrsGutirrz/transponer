@@ -5,26 +5,25 @@
  */
 package una.cr.transponer.main;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.Hashing;
-import java.util.ArrayList;
-import una.cr.transponer.dao.Dao;
-import una.cr.transponer.model.TablaGenerada;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
+import una.cr.transponer.utils.ConexionLoader;
 
-/**
- *
- * @author Guti
- */
 public class pruebas {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
+        
+        ConexionLoader c = ConexionLoader.getInstance();
+        
 
-        Dao dao = Dao.getInstance();
-       
-        System.out.println("El sha1 : " + Hashing.sha1().hashString("andres", Charsets.UTF_8).toString());
-    }
+    }//fin main
 
 }

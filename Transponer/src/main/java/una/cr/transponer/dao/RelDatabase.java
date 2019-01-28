@@ -10,10 +10,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import una.cr.transponer.utils.ConexionLoader;
 
 public class RelDatabase {
 
     Connection cnx;
+    ConexionLoader conn = ConexionLoader.getInstance();
 
     public RelDatabase() {
         cnx = this.getConnection();
@@ -23,7 +25,10 @@ public class RelDatabase {
         try {
 
             String driver = "com.mysql.jdbc.Driver";
-            String URL_conexion = "jdbc:mysql://localhost:3306/transponer?user=root&password=root";
+            //#jdbc:mysql://localhost:3306/transponer?user=root&password=root";
+            String aux = String.format("jdbc:mysql://%s:%s/%s?user=%s&password=%s", 
+                    conn.host,conn.puerto,conn.baseDatos,conn.user,conn.password);
+            String URL_conexion = aux;
             Class.forName(driver).newInstance();
             return DriverManager.getConnection(URL_conexion);
         } catch (Exception e) {
@@ -39,7 +44,7 @@ public class RelDatabase {
             stm.executeUpdate(statement);
             return stm.getUpdateCount();
         } catch (SQLException ex) {
-            System.out.println("Error doloroso: " + ex.getMessage());
+            System.out.println("Error: " + ex.getMessage());
             return 0;
         }
     }

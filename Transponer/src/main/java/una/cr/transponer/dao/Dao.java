@@ -7,14 +7,19 @@ package una.cr.transponer.dao;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 import una.cr.transponer.model.TablaGenerada;
 import una.cr.transponer.model.Usuario;
 import una.cr.transponer.model.Validate;
+import una.cr.transponer.utils.ConexionLoader;
 
 /**
  *
@@ -24,8 +29,16 @@ import una.cr.transponer.model.Validate;
 public class Dao {
 
     RelDatabase db;
-
+    
     private static Dao singleton = new Dao();
+    
+    ConexionLoader conn = ConexionLoader.getInstance();
+    
+    String tablaEvaluaciones = conn.tablaEvaluaciones;
+    String tablaProfesores = conn.tablaProfesores;
+    String tablaCursos = conn.tablaCursos;
+    String tablaPeriodo = conn.tablaPeriodo;
+
 
     //SIGLETON
     private Dao() {
@@ -132,9 +145,8 @@ public class Dao {
         int curso = 0;
         try {
             String sqlCursos = "SELECT DISTINCT "
-                    + "SVBTESD_CRN "
-                    + "FROM saturn_svbtesd where SVBTESD_TSSC_CODE= '%s';"; // limit 30
-            sqlCursos = String.format(sqlCursos, instrumento);
+                    + "SVBTESD_CRN FROM %s where SVBTESD_TSSC_CODE= '%s';"; 
+            sqlCursos = String.format(sqlCursos, tablaEvaluaciones,instrumento);
             ResultSet rs6 = db.executeQuery(sqlCursos);
             while (rs6.next()) {
                 curso = rs6.getInt("SVBTESD_CRN");
@@ -151,8 +163,8 @@ public class Dao {
         try {
             String sql = "select "
                     + "SVBTESD_ESAS_TEMP_PIDM "
-                    + "from saturn_svbtesd where SVBTESD_TSSC_CODE = '%s' ;"; // *********  ERROR **********
-            sql = String.format(sql, instrumento);
+                    + "from %s where SVBTESD_TSSC_CODE = '%s' ;"; // *********  ERROR **********
+            sql = String.format(sql,tablaEvaluaciones ,instrumento);
             ResultSet rs = db.executeQuery(sql);
             rs.next();
             encuesta = rs.getString("SVBTESD_ESAS_TEMP_PIDM");
@@ -171,8 +183,8 @@ public class Dao {
                     + "SVBTESD_OPEN_ANSWER,"
                     + "SVBTESD_PVAC_QPOINTS,"
                     + "SVBTESD_ACOD_CODE"
-                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = %s;";
-            sqlColumnas = String.format(sqlColumnas, encuesta);
+                    + " from %s where SVBTESD_ESAS_TEMP_PIDM = %s;";
+            sqlColumnas = String.format(sqlColumnas, tablaEvaluaciones,encuesta);
             ResultSet rs6 = db.executeQuery(sqlColumnas);
             while (rs6.next()) {
                 fila = rs6.getString("SVBTESD_QCOD_CODE");
@@ -192,8 +204,9 @@ public class Dao {
         ArrayList<Integer> numEncuestas = new ArrayList<>();
         int encuesta = 0;
         try {
-            String sqlEncuestas = "SELECT DISTINCT SVBTESD_ESAS_TEMP_PIDM FROM saturn_svbtesd where SVBTESD_CRN = %d ;";
-            sqlEncuestas = String.format(sqlEncuestas, curso);
+            String sqlEncuestas = "SELECT DISTINCT SVBTESD_ESAS_TEMP_PIDM "
+                    + "FROM %s where SVBTESD_CRN = %d ;";
+            sqlEncuestas = String.format(sqlEncuestas, tablaEvaluaciones ,curso);
             ResultSet rs3 = db.executeQuery(sqlEncuestas);
             while (rs3.next()) {
                 encuesta = rs3.getInt("SVBTESD_ESAS_TEMP_PIDM");
@@ -214,8 +227,8 @@ public class Dao {
                     + "SVBTESD_CRN,"
                     + "SVBTESD_FACULTY_PIDM,"
                     + "SVBTESD_TSSC_CODE"
-                    + " from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = %d limit 1;";
-            sql = String.format(sql, curso);
+                    + " from %s where SVBTESD_ESAS_TEMP_PIDM = %d limit 1;";
+            sql = String.format(sql,tablaEvaluaciones,curso);
             ResultSet rs = db.executeQuery(sql);
             rs.next();
             cf = this.ColsFijasBuilder(rs);
@@ -233,8 +246,8 @@ public class Dao {
                     + "SVBTESD_OPEN_ANSWER,"
                     + "SVBTESD_PVAC_QPOINTS,"
                     + "SVBTESD_ACOD_CODE "
-                    + "from saturn_svbtesd where SVBTESD_ESAS_TEMP_PIDM = %d;";
-            sqlRespuestas = String.format(sqlRespuestas, encuesta);
+                    + "from %s where SVBTESD_ESAS_TEMP_PIDM = %d;";
+            sqlRespuestas = String.format(sqlRespuestas, tablaEvaluaciones, encuesta);
             ResultSet rs4 = db.executeQuery(sqlRespuestas);
             while (rs4.next()) {
                 Respuesta rt2 = this.respuestaBuilder(rs4);
@@ -261,7 +274,7 @@ public class Dao {
                 cf.getNombreCurso(),cf.getEscuela(),cf.getFacultad(),cf.getCupo(),cf.getMatricula(),
                 cf.getCodigoCurso(),cf.getCampus()
                 );
-        System.out.println(cf);
+        
         if (db.executeUpdate(sqlInsertar) == 0) {
             throw new Exception("Error: Al insertar columnas Fijas ");
         }
@@ -276,12 +289,13 @@ public class Dao {
                     "SCBCRSE_COLL_CODE escuela,SCBCRSE_DIVS_CODE facultad, "
                     + "SCBCRSE_TITLE nombreCurso, " +
                     "SPRIDEN_ID cedula,SPRIDEN_LAST_NAME apellido,SPRIDEN_FIRST_NAME nombre " +
-                    "from saturn_ssbsect,saturn_scbcrse,saturn_spriden1 " +
+                    "from %s ,%s ,%s " +
                     "where SSBSECT_TERM_CODE = %s and  SSBSECT_CRN = %s " +
                     "and SSBSECT_SUBJ_CODE = SCBCRSE_SUBJ_CODE and SSBSECT_CRSE_NUMB = SCBCRSE_CRSE_NUMB " +
                     "and SPRIDEN_PIDM = %s;";
-            sql = String.format(sql, cf.getCiclo(),cf.getCrn(),cf.getPidm());
-            System.out.println(sql);
+            sql = String.format(sql,tablaPeriodo,tablaCursos,tablaProfesores,cf.getCiclo(),
+                    cf.getCrn(),cf.getPidm());
+            
             ResultSet rs = db.executeQuery(sql);
             while (rs.next()) {
                 cf.setCodigoCurso(rs.getString("cod1")+rs.getString("cod2"));
@@ -395,7 +409,7 @@ public class Dao {
     public void eliminarTabla(String nombreTabla) throws Exception {
         String sql = "DROP TABLE %s";
         sql = String.format(sql, nombreTabla);
-        System.out.println("Consulta: " + sql);
+        
         boolean resultado = db.executeBorrarTabla(sql);
         if (!resultado) {
             throw new Exception("Error al borrar la tabla");

@@ -1,7 +1,7 @@
 -- basado en https://www.solingest.com/almacenar-contrasenas-en-mysql
+-- create database transponer;
 
 use transponer;
-
 
 create table transponer.usuarios(
     id INT AUTO_INCREMENT not null,
@@ -11,6 +11,6 @@ create table transponer.usuarios(
 	CONSTRAINT PK_transponer_usuarios PRIMARY KEY (id)
 );
 
-insert into transponer.login(username,clave,activo) values ('ricardo',SHA1('ricardo'),1);
+insert into transponer.usuarios(username,clave,activo) values ('ricardo',SHA1('ricardo'),1);
 
-select * from transponer.login;
+select * from transponer.usuarios;

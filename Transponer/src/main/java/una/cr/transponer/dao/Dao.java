@@ -51,6 +51,7 @@ public class Dao {
     //BUILDERS
     //Respuesta Builder
     public Respuesta respuestaBuilder(ResultSet rs) {
+        //aca debo poner la logica de SEQ_NUM
         try {
 
             Respuesta pr = new Respuesta();
@@ -68,7 +69,15 @@ public class Dao {
                     temp = "-1";
                 }
                 pr.setRespuesta(temp);
-            } else {
+            } 
+            if( tipoRespuesta.equals("ESCASINO") || tipoRespuesta.equals("GNRO_INC") || tipoRespuesta.equals("GNRO_NR")){
+                String temp = rs.getString("SVBTESD_PVAC_SEQ_NUM");
+                if (temp == null || temp.isEmpty()) {
+                    temp = "-1";
+                }
+                pr.setRespuesta(temp);
+                
+            }else {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";
@@ -96,7 +105,11 @@ public class Dao {
             return null;
         }
     }
-
+    
+    
+    /*
+        Crea la tabla donde se pondrá la información generada
+    */
     public boolean crearTabla(String nombreTabla, ArrayList<String> columnas) {
         StringBuilder consulta = new StringBuilder();
         consulta.append("create table IF NOT EXISTS " + nombreTabla + " ( ");
@@ -240,11 +253,13 @@ public class Dao {
     public ArrayList<Respuesta> obtenerRespuestasPorEncuesta(int encuesta) throws Exception {
         ArrayList<Respuesta> respuestas = new ArrayList<>();
         try {
+            // ACA DEBO PONER LA OTRA COLUMNA ( SEQ_NUM )
             String sqlRespuestas = "select "
                     + "SVBTESD_QCOD_CODE,"
                     + "SVBTESD_OPEN_ANSWER,"
                     + "SVBTESD_PVAC_QPOINTS,"
-                    + "SVBTESD_ACOD_CODE "
+                    + "SVBTESD_ACOD_CODE, "
+                    + "SVBTESD_PVAC_SEQ_NUM "
                     + "from %s where SVBTESD_ESAS_TEMP_PIDM = %d;";
             sqlRespuestas = String.format(sqlRespuestas, tablaEvaluaciones, encuesta);
             ResultSet rs4 = db.executeQuery(sqlRespuestas);

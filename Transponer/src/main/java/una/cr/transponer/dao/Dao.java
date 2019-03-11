@@ -70,7 +70,7 @@ public class Dao {
                 }
                 pr.setRespuesta(temp);
             } 
-            if( tipoRespuesta.equals("ESCASINO") || tipoRespuesta.equals("GNRO_INC") || tipoRespuesta.equals("GNRO_NR")){
+            if( tipoRespuesta.equals("ESCASINO") || tipoRespuesta.equals("GNRO_INC") || tipoRespuesta.equals("GNRO_NR") || tipoRespuesta.equals("SI-NOVAL") || tipoRespuesta.equals("ESCAL-NS")){
                 String temp = rs.getString("SVBTESD_PVAC_SEQ_NUM");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";
@@ -78,7 +78,7 @@ public class Dao {
                 pr.setRespuesta(temp);
                 
             }
-            if( !tipoRespuesta.equals("ESCASINO") && !tipoRespuesta.equals("GNRO_INC") && !tipoRespuesta.equals("GNRO_NR") && !tipoRespuesta.equals("ESCAL-AB") ) {
+            if( !tipoRespuesta.equals("ESCASINO") && !tipoRespuesta.equals("GNRO_INC") && !tipoRespuesta.equals("GNRO_NR") && !tipoRespuesta.equals("ESCAL-AB") && !tipoRespuesta.equals("SI-NOVAL") && !tipoRespuesta.equals("ESCAL-NS")) {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";
@@ -317,7 +317,7 @@ public class Dao {
                 cf.setCedulaProfesor(rs.getString("cedula"));
                 cf.setCupo(rs.getString("cupo"));
                 cf.setMatricula(rs.getString("matricula"));
-                cf.setNombreProfesor(rs.getString("apellido") + rs.getString("nombre"));
+                cf.setNombreProfesor(rs.getString("apellido") + " " +rs.getString("nombre"));
                 cf.setEscuela(rs.getString("escuela"));
                 cf.setFacultad(rs.getString("facultad"));
                 cf.setCampus(rs.getString("campus"));

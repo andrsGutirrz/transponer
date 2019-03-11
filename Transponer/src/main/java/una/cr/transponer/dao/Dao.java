@@ -77,7 +77,8 @@ public class Dao {
                 }
                 pr.setRespuesta(temp);
                 
-            }else {
+            }
+            if( !tipoRespuesta.equals("ESCASINO") && !tipoRespuesta.equals("GNRO_INC") && !tipoRespuesta.equals("GNRO_NR") && !tipoRespuesta.equals("ESCAL-AB") ) {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";

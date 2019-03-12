@@ -63,6 +63,7 @@ public class Dao {
             pr.setCodigo(cod);
             pr.setRespuesta("-1");
             String tipoRespuesta = rs.getString("SVBTESD_ACOD_CODE"); //tipo de respuesta
+            
             if (tipoRespuesta.equals("ESCAL-AB")) {
                 String temp = rs.getString("SVBTESD_OPEN_ANSWER");
                 if (temp == null || temp.isEmpty()) {
@@ -78,6 +79,7 @@ public class Dao {
                 pr.setRespuesta(temp);
                 
             }
+            // TODO LO QUE NO CORRESPONDA A LO ANTERIOR, VA PARA QPOINTS
             if( !tipoRespuesta.equals("ESCASINO") && !tipoRespuesta.equals("GNRO_INC") && !tipoRespuesta.equals("GNRO_NR") && !tipoRespuesta.equals("ESCAL-AB") && !tipoRespuesta.equals("SI-NOVAL") && !tipoRespuesta.equals("ESCAL-NS")) {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
                 if (temp == null || temp.isEmpty()) {
@@ -351,8 +353,8 @@ public class Dao {
         String nombre = "";
         String fecha = "";
         try {
-            String sql = "SELECT table_name,create_time FROM information_schema.tables where table_schema='transponer';";
-
+            String sql = "SELECT table_name,create_time FROM information_schema.tables where table_schema='%s';";
+            sql = String.format(sql, conn.baseDatos);
             ResultSet rs = db.executeQuery(sql);
             while (rs.next()) {
                 nombre = rs.getString("table_name");
@@ -395,8 +397,8 @@ public class Dao {
         ArrayList<String> ls = new ArrayList<>();
         String dato = "";
         try {
-            String consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'transponer' AND TABLE_NAME = '%s';";
-            consulta = String.format(consulta, tabla);
+            String consulta = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s';";
+            consulta = String.format(consulta,conn.baseDatos, tabla);
             ResultSet rs = db.executeQuery(consulta);
             while (rs.next()) {
                 dato = rs.getString("COLUMN_NAME");

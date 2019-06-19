@@ -34,6 +34,7 @@
                                 <option>EDDMVCC5</option>
                                 <option>EVDBIM18</option>
                                 <option>IGENER18</option>
+                                <option>EDD_3RCI</option>
                             </select>
                         </div>
                     </div>

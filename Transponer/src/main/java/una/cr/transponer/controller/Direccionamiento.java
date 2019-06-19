@@ -53,6 +53,7 @@ public class Direccionamiento extends HttpServlet {
             request.getRequestDispatcher("view/index.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
 
@@ -66,6 +67,7 @@ public class Direccionamiento extends HttpServlet {
             request.getRequestDispatcher("view/login.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
 
@@ -93,6 +95,7 @@ public class Direccionamiento extends HttpServlet {
             request.getRequestDispatcher("view/consultar.jsp").forward(request, response);//*
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
 

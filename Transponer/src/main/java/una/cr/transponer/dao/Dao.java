@@ -90,6 +90,7 @@ public class Dao {
             }
             return pr;
         } catch (SQLException e) {
+            System.out.println("Error: " + e);
             return null;
         }
     }
@@ -105,6 +106,7 @@ public class Dao {
             cf.setTssc(rs.getString("SVBTESD_TSSC_CODE"));
             return cf;
         } catch (SQLException e) {
+            System.out.println("Error en respuestaBuilder: " + e);
             return null;
         }
     }
@@ -114,6 +116,7 @@ public class Dao {
         Crea la tabla donde se pondrá la información generada
     */
     public boolean crearTabla(String nombreTabla, ArrayList<String> columnas) {
+        
         StringBuilder consulta = new StringBuilder();
         consulta.append("create table IF NOT EXISTS " + nombreTabla + " ( ");
         consulta.append("encuesta varchar(10), ");
@@ -141,9 +144,12 @@ public class Dao {
             IGR05
             IGR06
              */
-            if (s.equals("INF03") || s.equals("INF01")
+            //AGREGAR LOS QUE SON RESPUESTAS ABIERTAS
+            if (       s.equals("INF03") || s.equals("INF01")
                     || s.equals("INF23") || s.equals("IGR05")
-                    || s.equals("IGR06") || s.equals("EGL33") || s.equals("EGL34")) {
+                    || s.equals("IGR06") || s.equals("EGL33") 
+                    || s.equals("EGL34") || s.equals("INF05")
+                ){
                 tipo = " varchar (1000)";// 1000
             }
             consulta.append(tipo).append(" , ");
@@ -168,7 +174,7 @@ public class Dao {
                 cursos.add(curso);
             }
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error en obtenerCursosPorInstrumento " + e.getMessage());
         }
         return cursos;
     }
@@ -178,12 +184,13 @@ public class Dao {
         try {
             String sql = "select "
                     + "SVBTESD_ESAS_TEMP_PIDM "
-                    + "from %s where SVBTESD_TSSC_CODE = '%s' ;"; // *********  ERROR **********
+                    + "from %s where SVBTESD_TSSC_CODE = '%s' ;"; // *********  ERROR ??**********
             sql = String.format(sql, tablaEvaluaciones, instrumento);
             ResultSet rs = db.executeQuery(sql);
             rs.next();
             encuesta = rs.getString("SVBTESD_ESAS_TEMP_PIDM");
         } catch (SQLException e) {
+            System.out.println(e);
             throw new Exception("Error AL obtener la primera encuesta");
         }
         return encuesta;
@@ -210,7 +217,7 @@ public class Dao {
                 columnas.add(fila);
             }
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error obtenerColumnasPorInstrumento " + e.getMessage());
         }
         return columnas;
     }
@@ -228,7 +235,7 @@ public class Dao {
                 numEncuestas.add(encuesta);
             }
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error obtenerEncuestasPorCurso " + e.getMessage());
         }
         return numEncuestas;
     }
@@ -248,7 +255,7 @@ public class Dao {
             rs.next();
             cf = this.ColsFijasBuilder(rs);
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error obtenerColumnasFijas" + e.getMessage());
         }
         return cf;
     }
@@ -271,7 +278,7 @@ public class Dao {
                 respuestas.add(rt2);
             }
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error obtenerRespuestasPorEncuesta: " + e.getMessage());
         }
         return respuestas;
     }
@@ -327,7 +334,7 @@ public class Dao {
             }
             return cf;
         } catch (SQLException e) {
-            throw new Exception("Error " + e.getMessage());
+            throw new Exception("Error insertarColumnasFaltantes: " + e.getMessage());
         }
 
     }
@@ -338,7 +345,7 @@ public class Dao {
         if (db.executeUpdate(sqlInsertarRespuestas) == 0) {
             throw new Exception("Error: Al insertar respuestas ");
         }
-    }
+     }
 
     public void insertarUltimo(String nombreTabla, Integer encuesta) throws Exception {
         String sqlInsertarUltimo = "update %s set ultimo = -1 where encuesta = %d ;";
@@ -367,7 +374,7 @@ public class Dao {
                 }
             }
         } catch (SQLException e) {
-            throw new Exception("Error consultando los nombres de las tablas");
+            throw new Exception("Error consultando los nombres de las tablas " + e.getMessage());
         }
         return ls;
     }
@@ -387,7 +394,7 @@ public class Dao {
                 }
             }
         } catch (SQLException e) {
-            throw new Exception("Error consultando los nombres de las tablas");
+            throw new Exception("Error consultando los nombres de las tablas " + e.getMessage());
         }
         return datos;
     }
@@ -405,7 +412,7 @@ public class Dao {
                 ls.add(dato);
             }
         } catch (SQLException e) {
-            throw new Exception("Error consultando los nombres de las tablas");
+            throw new Exception("Error consultando los nombres de las tablas " + e.getMessage());
         }
         return ls;
     }

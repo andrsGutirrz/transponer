@@ -67,6 +67,7 @@ public class LoginTransponer extends HttpServlet {
 
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
     

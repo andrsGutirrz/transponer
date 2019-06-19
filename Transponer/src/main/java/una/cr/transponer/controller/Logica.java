@@ -62,6 +62,7 @@ public class Logica extends HttpServlet {
             request.getRequestDispatcher("/transponer").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
 
@@ -108,7 +109,7 @@ public class Logica extends HttpServlet {
             } // fin for cursos
 
         } catch (Exception e) {
-            mensaje = "Error al procesar las encuestas!";
+            mensaje = "Error al procesar las encuestas! " + e.getMessage();
             return mensaje;
         }
         return mensaje;
@@ -131,6 +132,7 @@ public class Logica extends HttpServlet {
             request.getRequestDispatcher("/consultar").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
+            System.out.println("Error: " + e);
         }
     }
 

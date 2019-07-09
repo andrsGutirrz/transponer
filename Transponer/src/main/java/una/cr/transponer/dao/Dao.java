@@ -90,7 +90,7 @@ public class Dao {
             }
             return pr;
         } catch (SQLException e) {
-            System.out.println("Error: " + e);
+            System.out.println("Error respuesta builder: " + e);
             return null;
         }
     }
@@ -149,6 +149,7 @@ public class Dao {
                     || s.equals("INF23") || s.equals("IGR05")
                     || s.equals("IGR06") || s.equals("EGL33") 
                     || s.equals("EGL34") || s.equals("INF05")
+                    || s.equals("JUSTF")
                 ){
                 tipo = " varchar (1000)";// 1000
             }
@@ -222,6 +223,27 @@ public class Dao {
         return columnas;
     }
 
+    
+     public ArrayList<String> obtenerTodasColumnas() throws Exception {
+        ArrayList<String> columnas = new ArrayList<>();
+        String fila = "";
+        try {
+            String sqlColumnas = "select * from codigo_preguntas ";
+            ResultSet rs = db.executeQuery(sqlColumnas);
+            while (rs.next()) {
+                fila = rs.getString("codigo");
+                if (fila.contains("-")) {
+                    //podemos encontrarnos con columnas que tienen -, y da error de syntax
+                    fila = fila.replace("-", "");
+                }
+                columnas.add(fila);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error obtenerTodasColumnas " + e.getMessage());
+        }
+        return columnas;
+    }
+    
     public ArrayList<Integer> obtenerEncuestasPorCurso(int curso) throws Exception {
         ArrayList<Integer> numEncuestas = new ArrayList<>();
         int encuesta = 0;

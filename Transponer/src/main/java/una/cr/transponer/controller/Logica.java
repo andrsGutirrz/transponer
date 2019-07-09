@@ -62,7 +62,7 @@ public class Logica extends HttpServlet {
             request.getRequestDispatcher("/transponer").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
-            System.out.println("Error: " + e);
+            System.out.println("Error make transponer: " + e);
         }
     }
 
@@ -80,7 +80,8 @@ public class Logica extends HttpServlet {
 
             String encuestaPrimera = dao.obtenerPrimeraEncuestaPorInstrumento(instrumento);
 
-            ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
+            // ArrayList<String> columnas = dao.obtenerColumnasPorInstrumento(encuestaPrimera);
+            ArrayList<String> columnas = dao.obtenerTodasColumnas();
 
             dao.crearTabla(nombreTabla, columnas);
 
@@ -132,7 +133,7 @@ public class Logica extends HttpServlet {
             request.getRequestDispatcher("/consultar").forward(request, response);
         } catch (Exception e) {
             response.setStatus(401); //Bad request
-            System.out.println("Error: " + e);
+            System.out.println("Error: en buscar tabla " + e);
         }
     }
 

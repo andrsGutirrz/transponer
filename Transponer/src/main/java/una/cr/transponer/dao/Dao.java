@@ -5,20 +5,13 @@
  */
 package una.cr.transponer.dao;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.Hashing;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 import una.cr.transponer.model.ColsFijas;
 import una.cr.transponer.model.Respuesta;
 import una.cr.transponer.model.TablaGenerada;
 import una.cr.transponer.model.Usuario;
-import una.cr.transponer.model.Validate;
 import una.cr.transponer.utils.ConexionLoader;
 
 /**
@@ -32,6 +25,7 @@ public class Dao {
 
     private static Dao singleton = new Dao();
 
+    // reads propertie files
     ConexionLoader conn = ConexionLoader.getInstance();
 
     String tablaEvaluaciones = conn.tablaEvaluaciones;
@@ -51,7 +45,7 @@ public class Dao {
     //BUILDERS
     //Respuesta Builder
     public Respuesta respuestaBuilder(ResultSet rs) {
-        //aca debo poner la logica de SEQ_NUM
+        //De acuerdo al tipo de pregunta, entonces busca la columnna que corresponde
         try {
 
             Respuesta pr = new Respuesta();
@@ -71,7 +65,11 @@ public class Dao {
                 }
                 pr.setRespuesta(temp);
             } 
-            if( tipoRespuesta.equals("ESCASINO") || tipoRespuesta.equals("GNRO_INC") || tipoRespuesta.equals("GNRO_NR") || tipoRespuesta.equals("SI-NOVAL") || tipoRespuesta.equals("ESCAL-NS")){
+            if( tipoRespuesta.equals("ESCASINO") 
+                    || tipoRespuesta.equals("GNRO_INC") 
+                    || tipoRespuesta.equals("GNRO_NR") 
+                    || tipoRespuesta.equals("SI-NOVAL") 
+                    || tipoRespuesta.equals("ESCAL-NS")){
                 String temp = rs.getString("SVBTESD_PVAC_SEQ_NUM");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";
@@ -80,7 +78,12 @@ public class Dao {
                 
             }
             // TODO LO QUE NO CORRESPONDA A LO ANTERIOR, VA PARA QPOINTS
-            if( !tipoRespuesta.equals("ESCASINO") && !tipoRespuesta.equals("GNRO_INC") && !tipoRespuesta.equals("GNRO_NR") && !tipoRespuesta.equals("ESCAL-AB") && !tipoRespuesta.equals("SI-NOVAL") && !tipoRespuesta.equals("ESCAL-NS")) {
+            if( !tipoRespuesta.equals("ESCASINO") 
+                    && !tipoRespuesta.equals("GNRO_INC") 
+                    && !tipoRespuesta.equals("GNRO_NR") 
+                    && !tipoRespuesta.equals("ESCAL-AB") 
+                    && !tipoRespuesta.equals("SI-NOVAL") 
+                    && !tipoRespuesta.equals("ESCAL-NS")) {
                 String temp = rs.getString("SVBTESD_PVAC_QPOINTS");
                 if (temp == null || temp.isEmpty()) {
                     temp = "-1";
@@ -95,6 +98,11 @@ public class Dao {
         }
     }
 
+    
+    /*
+     Construye un objeto que almacena las columnas fijas
+     escuela, profesor, facultad ...
+    */
     public ColsFijas ColsFijasBuilder(ResultSet rs) {
         try {
 
@@ -161,6 +169,10 @@ public class Dao {
         return db.executeCrearTabla(consulta.toString());
     }
 
+    
+    /*
+        Obtiene los cursos por instrumento
+    */
     public ArrayList<Integer> obtenerCursosPorInstrumento(String instrumento) throws Exception {
         // si se quiere n resultados, usar limit n en la consulta sql, donde n es la cantidad de resultados que se quieren
         ArrayList<Integer> cursos = new ArrayList<>();
@@ -180,6 +192,14 @@ public class Dao {
         return cursos;
     }
 
+    
+    /*
+        Este metodo obtiene la primera encuesta de un instrumento para obtener las
+        los campos necesarios para crear una tabla
+    
+        [ Este metodo no funciona adecuadamente porque hay encuestas que no tienen
+            las mismas columnas ]
+    */
     public String obtenerPrimeraEncuestaPorInstrumento(String instrumento) throws Exception {
         String encuesta = "";
         try {
@@ -197,6 +217,10 @@ public class Dao {
         return encuesta;
     }
 
+    
+    /*
+     Por cada escuesta que entra en la funcion, se recorre y obtiene las columnas 
+    */
     public ArrayList<String> obtenerColumnasPorInstrumento(String encuesta) throws Exception {
         ArrayList<String> columnas = new ArrayList<>();
         String fila = "";
@@ -224,6 +248,11 @@ public class Dao {
     }
 
     
+    /*
+        Este metodo obtiene todas los codigo de preguntas existentes, para luego
+        generar una tabla para guardar los resultados generados por el 
+        sistema
+    */
      public ArrayList<String> obtenerTodasColumnas() throws Exception {
         ArrayList<String> columnas = new ArrayList<>();
         String fila = "";
@@ -244,6 +273,10 @@ public class Dao {
         return columnas;
     }
     
+     
+    /*
+        Este metodo obtiene las encuestas por curso
+    */
     public ArrayList<Integer> obtenerEncuestasPorCurso(int curso) throws Exception {
         ArrayList<Integer> numEncuestas = new ArrayList<>();
         int encuesta = 0;
@@ -262,6 +295,11 @@ public class Dao {
         return numEncuestas;
     }
 
+    
+    /*
+        Obtiene las columnas fijas como el nombre del profesor
+        escuela, facultad, ...
+    */
     public ColsFijas obtenerColumnasFijas(Integer curso) throws Exception {
         ColsFijas cf = new ColsFijas();
         try {
@@ -282,6 +320,10 @@ public class Dao {
         return cf;
     }
 
+    
+    /*
+        obtiene las respuestas por encuesta
+    */
     public ArrayList<Respuesta> obtenerRespuestasPorEncuesta(int encuesta) throws Exception {
         ArrayList<Respuesta> respuestas = new ArrayList<>();
         try {
@@ -305,6 +347,10 @@ public class Dao {
         return respuestas;
     }
 
+    
+    /*
+      inserta en la tabla los datos fijos de la encuesta  
+    */
     public void insertarColumnasFijas(String nombreTabla, ColsFijas cf) throws Exception {
         String sqlInsertar = "insert into %s ( "
                 + "encuesta, periodo, "
@@ -326,6 +372,10 @@ public class Dao {
         }
     }
 
+    
+    /*
+        inserta en la tabla de la base de datos los datos generados por el sistema
+    */
     public ColsFijas insertarColumnasFaltantes(ColsFijas cf) throws Exception {
         try {
 
@@ -361,6 +411,9 @@ public class Dao {
 
     }
 
+    /*
+        Inserta los datos de acuerdo a codigo de pregunta
+    */
     public void insertarRespuestas(String nombreTabla, Respuesta s, Integer encuesta) throws Exception {
         String sqlInsertarRespuestas = "update %s set %s = '%s' where encuesta = %d ;";
         sqlInsertarRespuestas = String.format(sqlInsertarRespuestas, nombreTabla, s.getCodigo(), s.getRespuesta(), encuesta);
@@ -369,6 +422,10 @@ public class Dao {
         }
      }
 
+    
+    /*
+       La ultima columna de la tabla generada, es un placeholder, solo para indicar el final
+    */
     public void insertarUltimo(String nombreTabla, Integer encuesta) throws Exception {
         String sqlInsertarUltimo = "update %s set ultimo = -1 where encuesta = %d ;";
         sqlInsertarUltimo = String.format(sqlInsertarUltimo, nombreTabla, encuesta);
@@ -377,6 +434,10 @@ public class Dao {
         }
     }
 
+    
+    /*
+        Obtiene las tablas generadas por el sistema
+    */
     public ArrayList<TablaGenerada> listaNombreTablas() throws Exception {
         ArrayList<TablaGenerada> ls = new ArrayList<>();
         String nombre = "";
@@ -401,6 +462,9 @@ public class Dao {
         return ls;
     }
 
+    /*
+        Obtiene toda la informacion de la tabla de la base de datos
+    */
     public ArrayList<String> obtenerDatosTabla(String tabla, ArrayList<String> cols) throws Exception {
         ArrayList<String> datos = new ArrayList<>();
         ArrayList<String> columnas = cols;
@@ -421,8 +485,11 @@ public class Dao {
         return datos;
     }
 
+    
+    /*
+        Obtiene metadata de la tabla
+    */
     public ArrayList<String> columnasTabla(String tabla) throws Exception {
-        /*Esta consulta estaria genial, si se hace una sola vez, al inicio de cargar el sistema, mejoriaria el tiempo*/
         ArrayList<String> ls = new ArrayList<>();
         String dato = "";
         try {
@@ -439,6 +506,9 @@ public class Dao {
         return ls;
     }
 
+    /*
+        Consulta si existe un usuario para ingresar al sistema
+    */
     public Usuario login(String usr, String clv) throws SQLException {
         Usuario usuario = null;
         String consulta = "select  * from usuarios where username = '%s' ";
@@ -455,6 +525,9 @@ public class Dao {
         return usuario;
     }
 
+    /*
+        Elimina la tabla
+    */
     public void eliminarTabla(String nombreTabla) throws Exception {
         String sql = "DROP TABLE %s";
         sql = String.format(sql, nombreTabla);

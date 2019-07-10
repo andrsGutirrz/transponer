@@ -47,6 +47,10 @@ public class Logica extends HttpServlet {
         }
     }
 
+    
+    /*
+        Obtiene del usuario el nombre de la tabla a generar y el instrumento que quiere procesar
+    */
     public void doMakeTransponer(HttpServletRequest request, HttpServletResponse response) {
         String mensaje = "";
         try {
@@ -66,6 +70,12 @@ public class Logica extends HttpServlet {
         }
     }
 
+    
+    /*
+        Logica principal, este hace un recorrido por toda la data para encontrar
+        las evaluaciones que corresponden al instrumeto seleccionado por el 
+        usuario
+    */
     public String transponerEvaluaciones(String _nombreTabla, String _instrumento) {
 
         String nombreTabla = _nombreTabla;
@@ -116,6 +126,11 @@ public class Logica extends HttpServlet {
         return mensaje;
     }
 
+    
+    /*
+     Busca en la base de datos la tabla con el nombre dado por el usuario para luego
+     ser mostrado
+    */
     public void doBuscarTabla(HttpServletRequest request, HttpServletResponse response) {
         try {
 
@@ -137,6 +152,10 @@ public class Logica extends HttpServlet {
         }
     }
 
+    /*
+        Obtiene el nombre de una tabla por parte del usuario para luego ser eliminada
+        de la base de datos
+    */
     public void doEliminarTabla(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
 
@@ -156,6 +175,10 @@ public class Logica extends HttpServlet {
         }
     }
 
+    /*
+        Busca en la base de datos si existe otra tabla con el mismo nombre
+        al momento de crear una nueva tabla
+    */
     public boolean existeNombreTabla(String nombre) throws Exception {
         ArrayList<TablaGenerada> ls = dao.listaNombreTablas();
         for (int i = 0; i < ls.size(); i++) {
